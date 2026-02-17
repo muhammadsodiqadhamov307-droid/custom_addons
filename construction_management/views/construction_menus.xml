@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="menu_construction_root" 
+              name="Qurilish" 
+              web_icon="project,static/description/icon.png"
+              sequence="10"/>
+
+    <!-- ACTIONS MUST BE DEFINED BEFORE MENUS REFERENCING THEM -->
+
+    <!-- Dashboard Action -->
+    <record id="action_construction_project_dashboard" model="ir.actions.act_window">
+        <field name="name">Boshqaruv paneli</field>
+        <field name="res_model">construction.project</field>
+        <field name="view_mode">kanban,graph,pivot,form</field>
+    </record>
+
+    <!-- Dashboard Menu -->
+    <menuitem id="menu_construction_dashboard"
+              name="Boshqaruv paneli"
+              parent="menu_construction_root"
+              action="action_construction_project_dashboard"
+              sequence="5"/>
+
+    <!-- Projects Action -->
+    <record id="action_construction_project_all" model="ir.actions.act_window">
+        <field name="name">Barcha Loyihalar</field>
+        <field name="res_model">construction.project</field>
+        <field name="view_mode">tree,kanban,form</field>
+    </record>
+
+    <!-- Projects Menu -->
+    <menuitem id="menu_construction_project" 
+              name="Loyihalar" 
+              parent="menu_construction_root" 
+              sequence="10"/>
+
+    <menuitem id="menu_construction_project_all" 
+              name="Barcha Loyihalar" 
+              parent="menu_construction_project" 
+              action="action_construction_project_all" 
+              sequence="10"/>
+
+    <!-- Stages Action -->
+    <record id="action_construction_stage_all" model="ir.actions.act_window">
+        <field name="name">Barcha Bosqichlar</field>
+        <field name="res_model">construction.stage</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Stages Menu -->
+    <menuitem id="menu_construction_stage" 
+              name="Bosqichlar" 
+              parent="menu_construction_root" 
+              sequence="20"/>
+    
+    <menuitem id="menu_construction_stage_all"
+              name="Barcha Bosqichlar"
+              parent="menu_construction_stage"
+              action="action_construction_stage_all"
+              sequence="10"/>
+
+    <!-- Payments Action -->
+    <record id="action_construction_payment_all" model="ir.actions.act_window">
+        <field name="name">To'lovlar</field>
+        <field name="res_model">construction.payment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Payments Menu -->
+    <menuitem id="menu_construction_payment" 
+              name="To'lovlar" 
+              parent="menu_construction_root" 
+              sequence="30"/>
+
+    <menuitem id="menu_construction_payment_all" 
+              name="Barcha To'lovlar" 
+              parent="menu_construction_payment" 
+              action="action_construction_payment_all" 
+              sequence="10"/>
+              
+    <!-- Configuration -->
+     <menuitem id="menu_construction_config" 
+              name="Sozlamalar" 
+              parent="menu_construction_root" 
+              sequence="100"/>
+              
+</odoo>

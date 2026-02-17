@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- WORKER RULE: See only assigned to me (and role=worker) -->
+        <!-- MANAGER RULE: See All -->
+        <record id="rule_construction_work_task_manager" model="ir.rule">
+            <field name="name">Manager: See All Tasks</field>
+            <field name="model_id" ref="model_construction_work_task"/>
+            <field name="groups" eval="[(4, ref('project.group_project_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <!-- PROJECT RULE: Manager See All -->
+        <record id="rule_construction_project_manager" model="ir.rule">
+            <field name="name">Manager: See All Projects</field>
+            <field name="model_id" ref="model_construction_project"/>
+            <field name="groups" eval="[(4, ref('project.group_project_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <!-- PROJECT RULE: Internal User (Assignments) -->
+        <record id="rule_construction_project_user" model="ir.rule">
+            <field name="name">User: Allowed Projects Only</field>
+            <field name="model_id" ref="model_construction_project"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">['|','|','|','|','|',
+                ('user_id','=', user.id),
+                ('designer_id','=', user.id),
+                ('foreman_id','=', user.id),
+                ('supply_id','=', user.id),
+                ('worker_ids','in', user.id),
+                ('customer_id','=', user.partner_id.id)
+            ]</field>
+        </record>
+
+        <!-- TASK RULE: User Visibility -->
+        <!-- 
+             Logic:
+             1. See my assigned tasks.
+             2. See all tasks in projects where I am Manager/Designer/Foreman/Supply.
+             (Worker role should usually only see assigned tasks, but if they are in 'worker_ids' of project, do they see all project tasks? 
+              Likely NO, based on Step 3 req. 
+              But Step 6 says "Apply visibility... so users only see records where project_id is in allowed projects".
+              This usually means "Restrict to Project Scope", not necessarily "Open everything in Project".
+              So the constraint is: Must be allowed project AND (Assigned Task OR Role != Worker).
+              
+              Let's try simpler first: "Assigned Task OR I am Manager/Designer/Foreman/Supply of Project".
+        -->
+        <record id="rule_construction_work_task_user" model="ir.rule">
+            <field name="name">User: Assigned or Project Role</field>
+            <field name="model_id" ref="model_construction_work_task"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">['|', 
+                ('assignee_id', '=', user.id), 
+                '|','|','|',
+                ('project_id.user_id', '=', user.id),
+                ('project_id.designer_id', '=', user.id),
+                ('project_id.foreman_id', '=', user.id),
+                ('project_id.supply_id', '=', user.id)
+            ]</field>
+        </record>
+        
+        <!-- PROJECT FILE RULE: Visibility based on Project Access -->
+        <record id="rule_construction_project_file_user" model="ir.rule">
+            <field name="name">User: Files of Allowed Projects</field>
+            <field name="model_id" ref="model_construction_project_file"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">['|','|','|','|','|',
+                ('project_id.user_id','=', user.id),
+                ('project_id.designer_id','=', user.id),
+                ('project_id.foreman_id','=', user.id),
+                ('project_id.supply_id','=', user.id),
+                ('project_id.worker_ids','in', user.id),
+                ('project_id.customer_id','=', user.partner_id.id)
+            ]</field>
+        </record>
+        
+
+        <!-- DELIVERY RULE: Visibility based on Project Access -->
+        <record id="rule_construction_material_delivery_user" model="ir.rule">
+            <field name="name">User: Delivery of Allowed Projects</field>
+            <field name="model_id" ref="model_construction_material_delivery"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">['|','|','|','|','|',
+                ('project_id.user_id','=', user.id),
+                ('project_id.designer_id','=', user.id),
+                ('project_id.foreman_id','=', user.id),
+                ('project_id.supply_id','=', user.id),
+                ('project_id.worker_ids','in', user.id),
+                ('project_id.customer_id','=', user.partner_id.id)
+            ]</field>
+        </record>
+        
+        <record id="rule_construction_material_delivery_manager" model="ir.rule">
+            <field name="name">Manager: All Delivery</field>
+            <field name="model_id" ref="model_construction_material_delivery"/>
+            <field name="groups" eval="[(4, ref('project.group_project_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <!-- DELIVERY LOG RULE: Visibility based on Delivery Access -->
+        <record id="rule_construction_material_delivery_log_user" model="ir.rule">
+            <field name="name">User: Delivery Logs of Allowed Projects</field>
+            <field name="model_id" ref="model_construction_material_delivery_log"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">['|','|','|','|','|',
+                ('delivery_id.project_id.user_id','=', user.id),
+                ('delivery_id.project_id.designer_id','=', user.id),
+                ('delivery_id.project_id.foreman_id','=', user.id),
+                ('delivery_id.project_id.supply_id','=', user.id),
+                ('delivery_id.project_id.worker_ids','in', user.id),
+                ('delivery_id.project_id.customer_id','=', user.partner_id.id)
+            ]</field>
+        </record>
+        
+        <record id="rule_construction_material_delivery_log_manager" model="ir.rule">
+            <field name="name">Manager: All Delivery Logs</field>
+            <field name="model_id" ref="model_construction_material_delivery_log"/>
+            <field name="groups" eval="[(4, ref('project.group_project_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+        
+    </data>
+</odoo>

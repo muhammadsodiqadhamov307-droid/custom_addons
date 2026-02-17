@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action -->
+
+
+    <!-- Tree View -->
+    <record id="view_construction_kirim_tree" model="ir.ui.view">
+        <field name="name">construction.kirim.tree</field>
+        <field name="model">construction.kirim</field>
+        <field name="arch" type="xml">
+            <tree string="Kirimlar">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="project_id"/>
+                <field name="currency_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_construction_kirim_form" model="ir.ui.view">
+        <field name="name">construction.kirim.form</field>
+        <field name="model">construction.kirim</field>
+        <field name="arch" type="xml">
+            <form string="Bugungi kirim">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Materiallar">
+                            <field name="line_ids" context="{'default_type': 'material'}" domain="[('type', '=', 'material')]">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="qty"/>
+                                    <field name="uom_id"/>
+                                    <field name="unit_price" widget="monetary"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <field name="total" widget="monetary"/>
+                                    <field name="stage_id"/>
+                                    <field name="type" column_invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Xizmatlar">
+                            <field name="line_ids" context="{'default_type': 'service'}" domain="[('type', '=', 'service')]">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="qty"/>
+                                    <field name="uom_id"/>
+                                    <field name="unit_price" widget="monetary"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <field name="total" widget="monetary"/>
+                                    <field name="stage_id"/>
+                                    <field name="type" column_invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Izohlar">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                    <group>
+                        <group/>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="total_material" widget="monetary"/>
+                            <field name="total_xizmat" widget="monetary"/>
+                            <div class="oe_subtotal_footer_separator oe_inline">
+                                <label for="total_all"/>
+                            </div>
+                            <field name="total_all" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+    <!-- Action: Today Only -->
+    <record id="action_construction_kirim_today" model="ir.actions.act_window">
+        <field name="name">Bugungi kirimlar</field>
+        <field name="res_model">construction.kirim</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('date', '=', context_today())]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Bugun uchun yangi kirim yarating
+            </p>
+        </field>
+    </record>
+
+    <!-- Action: All -->
+    <record id="action_construction_kirim_all" model="ir.actions.act_window">
+        <field name="name">Barcha kirimlar</field>
+        <field name="res_model">construction.kirim</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Yangi kirim yarating
+            </p>
+        </field>
+    </record>
+
+    <!-- Menus -->
+    <menuitem id="menu_construction_kirim_root"
+              name="Kirimlar"
+              parent="menu_construction_root"
+              sequence="25"/>
+
+    <menuitem id="menu_construction_kirim_today"
+              name="Bugungi kirimlar"
+              parent="menu_construction_kirim_root"
+              action="action_construction_kirim_today"
+              sequence="10"/>
+
+    <menuitem id="menu_construction_kirim_all"
+              name="Barcha kirimlar"
+              parent="menu_construction_kirim_root"
+              action="action_construction_kirim_all"
+              sequence="20"/>
+</odoo>

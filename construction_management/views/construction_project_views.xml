@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_construction_project_form" model="ir.ui.view">
+        <field name="name">construction.project.form</field>
+        <field name="model">construction.project</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="Construction Project">
+                <header>
+                    <button name="action_start" string="Loyihani boshlash" 
+                            type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_complete" string="Yakunlash" 
+                            type="object" class="oe_highlight" invisible="state != 'in_progress'"/>
+                    <button name="action_cancel" string="Bekor qilish" 
+                            type="object" invisible="state not in ('draft','in_progress')"/>
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="draft,in_progress,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Project Name"/></h1>
+                        <field name="analytic_account_id" invisible="1"/>
+                    </div>
+
+
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_stages"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-building-o">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Texnik bo'lim</span>
+                            </div>
+                        </button>
+                        <button name="action_view_analytic_lines"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-line-chart"
+                                invisible="not analytic_account_id">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Moliya hisoboti</span>
+                            </div>
+                        </button>
+                        <button name="action_view_work_tasks"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-tasks">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Vazifalar</span>
+                            </div>
+                        </button>
+                        <button name="action_view_files"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-paperclip">
+                            <field name="file_count" widget="statinfo" string="Fayllar"/>
+                        </button>
+                        <button name="action_open_deliveries"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-truck">
+                            <field name="delivery_count" widget="statinfo" string="Yetkazish"/>
+                        </button>
+
+                    </div>
+                        <group>
+                            <group string="Asosiy ma'lumotlar">
+                                <field name="customer_id"/>
+                                <field name="address"/>
+                                <field name="company_id" invisible="1"/>
+                            </group>
+
+                            <group string="Jamoa / Mas'ullar">
+                                <field name="user_id"/>
+                                <field name="designer_id"/>
+                                <field name="foreman_id"/>
+                                <field name="supply_id"/>
+                                <field name="worker_ids" widget="many2many_tags"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                            </group>
+                        </group>
+                    
+                    <group string="Mablag'lar">
+                         <group>
+                             <field name="analytic_account_id" groups="base.group_no_one"/>
+                             <field name="total_income" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+
+                             <field name="total_expense" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                             <field name="balance" widget="monetary" options="{'currency_field': 'currency_id'}" decoration-danger="balance &lt; 0" decoration-success="balance &gt; 0"/>
+                         </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Kirim">
+                            <field name="income_ids">
+                                <tree editable="bottom">
+                                    <field name="date"/>
+                                    <field name="amount" sum="Jami kirim"/>
+                                    <field name="description"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                    </notebook>
+
+
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                    <field name="activity_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_construction_project_tree" model="ir.ui.view">
+        <field name="name">construction.project.tree</field>
+        <field name="model">construction.project</field>
+        <field name="arch" type="xml">
+            <tree string="Loyihalar">
+                <field name="name"/>
+                <field name="customer_id"/>
+
+
+                <field name="state" decoration-info="state=='draft'" 
+                       decoration-primary="state=='in_progress'" 
+                       decoration-success="state=='completed'" 
+                       decoration-muted="state=='cancelled'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_construction_project_kanban" model="ir.ui.view">
+        <field name="name">construction.project.kanban</field>
+        <field name="model">construction.project</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="name"/>
+                <field name="customer_id"/>
+                <field name="state"/>
+
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                                <div>
+                                    <field name="customer_id"/>
+                                </div>
+                                <div class="mt-2">
+                                    <button name="action_view_stages" type="object" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-building-o"/> Texnik bo'lim
+                                    </button>
+
+                                    <button name="action_open_financial_report" type="object" class="btn btn-secondary btn-sm ms-1">
+                                        <i class="fa fa-money"/> Hisobot
+                                    </button>
+
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_construction_project_search" model="ir.ui.view">
+        <field name="name">construction.project.search</field>
+        <field name="model">construction.project</field>
+        <field name="arch" type="xml">
+            <search string="Loyihalar">
+                <field name="name"/>
+                <field name="customer_id"/>
+                <field name="user_id"/>
+
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Customer" name="group_customer" context="{'group_by': 'customer_id'}"/>
+
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Manager" name="group_user" context="{'group_by': 'user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+
+    <record id="view_construction_project_financial_popup" model="ir.ui.view">
+        <field name="name">construction.project.financial.popup</field>
+        <field name="model">construction.project</field>
+        <field name="priority">999</field>
+        <field name="arch" type="xml">
+            <form string="Loyiha moliya hisoboti">
+                <header>
+                    <button name="action_print_financial_qs" string="PDF hisobotni chop etish" type="object" class="btn-primary" icon="fa-print"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Xulosa">
+                            <field name="total_income" widget="monetary" readonly="1"/>
+                            <field name="total_expense" widget="monetary" readonly="1"/>
+                            <field name="balance" widget="monetary" decoration-danger="balance &lt; 0" decoration-success="balance &gt; 0" readonly="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Kirim">
+                            <field name="income_ids" readonly="1">
+                                <tree>
+                                    <field name="date"/>
+                                    <field name="amount" sum="Jami"/>
+                                    <field name="description"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Chiqim">
+                            <field name="stage_ids" readonly="1">
+                                <tree>
+                                    <field name="name" string="Bosqich"/>
+                                    <field name="actual_cost" string="Jami xarajat" sum="Jami chiqim"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

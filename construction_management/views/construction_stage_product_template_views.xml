@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_construction_stage_product_template_tree" model="ir.ui.view">
+        <field name="name">construction.stage.product.template.tree</field>
+        <field name="model">construction.stage.product.template</field>
+        <field name="arch" type="xml">
+            <tree string="Bosqich Mahsulotlari" editable="bottom">
+                <field name="stage_type"/>
+                <field name="resource_type"/>
+                <field name="product_tmpl_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_construction_stage_product_template_search" model="ir.ui.view">
+        <field name="name">construction.stage.product.template.search</field>
+        <field name="model">construction.stage.product.template</field>
+        <field name="arch" type="xml">
+            <search string="Qidirish">
+                <field name="product_tmpl_id"/>
+                <field name="stage_type"/>
+                <group expand="1" string="Guruhlash">
+                    <filter string="Bosqich turi" name="group_stage_type" context="{'group_by':'stage_type'}"/>
+                    <filter string="Resurs turi" name="group_resource_type" context="{'group_by':'resource_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_construction_stage_product_template" model="ir.actions.act_window">
+        <field name="name">Bosqich Mahsulotlari</field>
+        <field name="res_model">construction.stage.product.template</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{'search_default_group_stage_type': 1}</field>
+    </record>
+
+    <!-- Menu Item (will verify parent in construction_menus.xml) -->
+    <!-- Assuming construction_management.menu_construction_config exists -->
+    <menuitem id="menu_construction_stage_product_template"
+              name="Bosqich Mahsulotlari"
+              parent="construction_management.menu_construction_config"
+              action="action_construction_stage_product_template"
+              sequence="20"/>
+</odoo>

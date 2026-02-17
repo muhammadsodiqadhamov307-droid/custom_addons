@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Stage Form View -->
+    <record id="view_construction_stage_form" model="ir.ui.view">
+        <field name="name">construction.stage.form</field>
+        <field name="model">construction.stage</field>
+        <field name="arch" type="xml">
+            <form string="Qurilish bosqichi">
+                <header>
+                    <button name="action_start" string="Bosqichini boshlash" 
+                            type="object" class="oe_highlight" invisible="state != 'pending'"/>
+                    <button name="action_complete" string="Bosqichini yakunlash" 
+                            type="object" class="oe_highlight" invisible="state != 'in_progress'"/>
+                    <button name="action_block" string="Bloklash" 
+                            type="object" invisible="state != 'in_progress'"/>
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="pending,in_progress,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="stage_type"/>
+                            <field name="responsible_user_id"/>
+
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="actual_end_date" invisible="state != 'completed'"/>
+                            <field name="progress" widget="progressbar"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Byudjet">
+                            <field name="estimated_budget"/>
+                            <field name="actual_cost"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Materiallar">
+                            <field name="material_ids">
+                                <tree editable="bottom">
+                                    <field name="date" string="Sana"/>
+                                    <field name="product_id" string="Material"/>
+
+                                    <field name="quantity_planned" string="Miqdor"/>
+                                    <field name="construction_uom_id" string="O'lchov birligi"/>
+                                    <field name="uom_id" column_invisible="1"/>
+                                    <field name="quantity_used" string="Ishlatildi" optional="hide"/>
+                                    <field name="unit_price" string="Narx" widget="monetary"/>
+                                    <field name="total_cost" string="Jami" widget="monetary"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Xizmatlar">
+                            <field name="service_ids">
+                                <tree editable="bottom">
+                                    <field name="date" string="Sana"/>
+                                    <field name="service_id" string="Xizmat"/>
+
+                                    <field name="description" optional="show"/>
+                                    <field name="quantity" string="Miqdor"/>
+                                    <field name="construction_uom_id" string="O'lchov birligi"/>
+                                    <field name="uom_id" column_invisible="1"/>
+                                    <field name="unit_price" string="Narx" widget="monetary"/>
+                                    <field name="total_cost" string="Jami" widget="monetary"/>
+                                    <field name="employee_id" optional="hide"/>
+                                </tree>
+
+                            </field>
+                        </page>
+                        <page string="Vazifalar">
+                            <field name="task_ids">
+                                <tree>
+
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="completed" widget="boolean_toggle"/>
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                    <field name="assigned_to"/>
+                                    <field name="deadline"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Rasmlar">
+                            <field name="image_ids" mode="kanban">
+                                <kanban>
+                                    <field name="name"/>
+                                    <field name="image"/>
+                                    <field name="source"/>
+                                    <field name="upload_date"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="oe_kanban_global_click">
+                                                <div class="o_kanban_image">
+                                                    <field name="image" widget="image" options="{'size': [100, 100]}"/>
+                                                </div>
+                                                <div class="oe_kanban_details">
+                                                    <strong><field name="name"/></strong>
+                                                    <div><field name="source"/></div>
+                                                    <div><field name="upload_date"/></div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="source"/>
+                                            <field name="upload_date"/>
+                                        </group>
+                                        <div class="o_attachment_preview">
+                                            <field name="image" widget="image" class="oe_avatar"/>
+                                        </div>
+
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Izohlar">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                    <field name="activity_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_construction_stage_kanban" model="ir.ui.view">
+        <field name="name">construction.stage.kanban</field>
+        <field name="model">construction.stage</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_type" class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="actual_cost"/>
+                <field name="state"/>
+                <field name="stage_type"/>
+
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </strong>
+
+
+                                </div>
+                            </div>
+                            
+                            <div class="mt-2 border-top pt-2">
+                                <!-- Toggle Button -->
+                                <a type="button"
+                                   role="button"
+                                   data-bs-toggle="collapse"
+                                   t-attf-data-bs-target="#stage_fold_{{record.id.raw_value}}"
+                                   class="btn btn-link p-0 text-decoration-none text-muted">
+                                    <i class="fa fa-chevron-down me-1"/> Tafsilotlar
+                                </a>
+
+                                <!-- Collapsible Area -->
+                                <div class="collapse mt-2" t-attf-id="stage_fold_{{record.id.raw_value}}">
+                                    <div class="small">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>Jami summa:</span>
+                                            <strong class="text-primary">
+                                                <field name="actual_cost" widget="monetary"/>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="o_kanban_record_bottom mt-2">
+                                <div class="oe_kanban_bottom_left">
+                                    <field name="state" widget="label_selection" 
+                                           options="{'classes': {'pending': 'default', 'in_progress': 'success', 'completed': 'primary', 'blocked': 'danger'}}"/>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="estimated_budget"/>
+                                </div>
+
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_construction_stage_tree" model="ir.ui.view">
+        <field name="name">construction.stage.tree</field>
+        <field name="model">construction.stage</field>
+        <field name="arch" type="xml">
+            <tree string="Bosqichlar">
+                <field name="project_id"/>
+
+                <field name="name"/>
+                <field name="stage_type"/>
+                <field name="state"/>
+
+                <field name="progress" widget="progressbar"/>
+                <field name="estimated_budget"/>
+                <field name="actual_cost"/>
+                <field name="responsible_user_id"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_construction_stage_search" model="ir.ui.view">
+        <field name="name">construction.stage.search</field>
+        <field name="model">construction.stage</field>
+        <field name="arch" type="xml">
+            <search string="Bosqichlar">
+                <field name="name"/>
+                <field name="project_id"/>
+                <filter string="Pending" name="pending" domain="[('state', '=', 'pending')]"/>
+                <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Task Form View -->
+    <record id="view_construction_stage_task_form" model="ir.ui.view">
+        <field name="name">construction.stage.task.form</field>
+        <field name="model">construction.stage.task</field>
+        <field name="arch" type="xml">
+            <form string="Vazifa">
+                <header>
+                    <button name="action_back" string="Ortga" type="object" icon="fa-arrow-left"/>
+                </header>
+
+                <sheet>
+
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="stage_id" readonly="1"/>
+                            <field name="assigned_to"/>
+                        </group>
+                        <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="name == 'Rasmlar'"/>
+                            <field name="total_cost" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="name == 'Rasmlar'"/>
+                            <field name="progress" widget="progressbar" invisible="name != 'Оплата мастерам за работы'"/>
+                        </group>
+
+
+                    </group>
+                    <notebook>
+                        <page string="Материалы для работы" invisible="name in ['Оплата мастерам за работы', 'Rasmlar']">
+                            <field name="material_ids" context="{'default_stage_id': stage_id}">
+                                <tree editable="bottom">
+                                    <field name="date" string="Sana"/>
+                                    <field name="product_id" string="Material"/>
+
+                                    <field name="quantity_planned" string="Miqdor"/>
+                                    <field name="construction_uom_id" string="O'lchov birligi"/>
+                                    <field name="uom_id" column_invisible="1"/>
+                                    <field name="quantity_used" string="Ishlatildi" optional="hide"/>
+                                    <field name="unit_price" string="Narx" widget="monetary"/>
+                                    <field name="total_cost" string="Jami" widget="monetary" sum="Total"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Оплата мастерам за работы" invisible="name in ['Материалы для работы', 'Rasmlar']">
+                            <field name="service_ids" context="{'default_stage_id': stage_id}">
+                                <tree editable="bottom">
+                                    <field name="is_done" widget="boolean_toggle" string="Bajarildi"/>
+                                    <field name="date" string="Sana"/>
+                                    <field name="service_id" string="Xizmat"/>
+
+                                    <field name="description" optional="show"/>
+                                    <field name="quantity" string="Miqdor"/>
+                                    <field name="construction_uom_id" string="O'lchov birligi"/>
+                                    <field name="uom_id" column_invisible="1"/>
+                                    <field name="unit_price" string="Narx" widget="monetary"/>
+                                    <field name="total_cost" string="Jami" widget="monetary" sum="Total"/>
+                                    <field name="date_start" optional="hide"/>
+                                    <field name="date_end" optional="hide"/>
+                                    <field name="state" optional="hide"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Rasmlar 📸" invisible="name != 'Rasmlar'">
+                            <field name="image_ids" mode="kanban" context="{'default_stage_id': stage_id}">
+                                <kanban>
+                                    <field name="name"/>
+                                    <field name="image"/>
+                                    <field name="source"/>
+                                    <field name="upload_date"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="oe_kanban_global_click">
+                                                <div class="o_kanban_image">
+                                                    <field name="image" widget="image" options="{'size': [100, 100]}"/>
+                                                </div>
+                                                <div class="oe_kanban_details">
+                                                    <strong><field name="name"/></strong>
+                                                    <div><field name="source"/></div>
+                                                    <div><field name="upload_date"/></div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="image" widget="image" options="{'size': [0, 0]}"/>
+                                            <field name="source" readonly="1"/>
+                                            <field name="upload_date" readonly="1"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Tavsif">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Task Kanban View -->
+    <record id="view_construction_stage_task_kanban" model="ir.ui.view">
+        <field name="name">construction.stage.task.kanban</field>
+        <field name="model">construction.stage.task</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id" class="o_kanban_small_column" records_draggable="0">
+                <field name="name"/>
+                <field name="stage_id"/>
+
+                <field name="total_cost"/>
+                <field name="progress"/>
+                <field name="limit_content"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                     <!-- Progress Bar -->
+                                     <div t-if="record.name.raw_value == 'Оплата мастерам за работы'" class="d-flex align-items-center w-100">
+                                          <field name="progress" widget="progressbar"/>
+                                     </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-2 text-primary" t-if="record.name.raw_value != 'Rasmlar'">
+                                <strong>Jami: </strong> <field name="total_cost" widget="monetary"/>
+                            </div>
+
+                             <div class="mt-2 border-top pt-2">
+                                <a type="button" role="button" data-bs-toggle="collapse" t-attf-data-bs-target="#task_fold_{{record.id.raw_value}}" class="btn btn-link p-0 text-decoration-none text-muted">
+                                    <i class="fa fa-chevron-down me-1"/> Tafsilotlar
+                                </a>
+                                <div class="collapse mt-2" t-attf-id="task_fold_{{record.id.raw_value}}">
+                                    <div class="small">
+                                         <field name="limit_content" widget="html"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+
+        </field>
+    </record>
+
+</odoo>

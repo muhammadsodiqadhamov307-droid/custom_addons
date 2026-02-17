@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- FILE CATEGORY VIEWS -->
+    <record id="view_construction_file_category_tree" model="ir.ui.view">
+        <field name="name">construction.file.category.tree</field>
+        <field name="model">construction.file.category</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_construction_file_category" model="ir.actions.act_window">
+        <field name="name">Bo'limlar</field>
+        <field name="res_model">construction.file.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- PROJECT FILE VIEWS -->
+    <record id="view_construction_project_file_tree" model="ir.ui.view">
+        <field name="name">construction.project.file.tree</field>
+        <field name="model">construction.project.file</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="project_id"/>
+                <field name="room_ref"/>
+                <field name="category_id"/>
+                <field name="name"/>
+                <field name="version_display"/>
+                <field name="is_latest" widget="boolean_toggle"/>
+                <field name="upload_date"/>
+                <field name="uploaded_by" widget="many2one_avatar_user"/>
+                <field name="attachment_id" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_construction_project_file_form" model="ir.ui.view">
+        <field name="name">construction.project.file.form</field>
+        <field name="model">construction.project.file</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Fayl nomi..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="room_ref"/>
+                            <field name="category_id"/>
+                        </group>
+                        <group>
+                            <field name="file_data" filename="file_name" widget="binary" options="{'accepted_file_extensions': '.pdf,.png,.jpg,.jpeg,.xlsx,.docx,.dwg'}"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="version_display"/>
+                            <field name="is_latest"/>
+                            <field name="uploaded_by"/>
+                            <field name="upload_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Izoh">
+                            <field name="note"/>
+                        </page>
+                        <page string="Texnik Ma'lumot" groups="base.group_no_one">
+                             <group>
+                                <field name="attachment_id" readonly="1"/>
+                             </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_construction_project_file_search" model="ir.ui.view">
+        <field name="name">construction.project.file.search</field>
+        <field name="model">construction.project.file</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="room_ref"/>
+                <field name="category_id"/>
+                <filter string="Oxirgi Versiyalar" name="latest" domain="[('is_latest', '=', True)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Loyiha" name="group_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Xona" name="group_room" context="{'group_by': 'room_ref'}"/>
+                    <filter string="Bo'lim" name="group_category" context="{'group_by': 'category_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_construction_project_file" model="ir.actions.act_window">
+        <field name="name">Fayllar</field>
+        <field name="res_model">construction.project.file</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_latest': 1, 'search_default_group_project': 1}</field>
+    </record>
+
+    <!-- MENUS -->
+     <menuitem id="menu_construction_files_root" 
+              name="Fayllar" 
+              parent="menu_construction_root" 
+              sequence="25"/>
+              
+    <menuitem id="menu_construction_project_file" 
+              name="Fayllar" 
+              parent="menu_construction_files_root" 
+              action="action_construction_project_file" 
+              sequence="10"/>
+
+    <menuitem id="menu_construction_file_category" 
+              name="Bo'limlar" 
+              parent="menu_construction_files_root" 
+              action="action_construction_file_category" 
+              sequence="20"/>
+
+</odoo>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Portal My Projects List -->
+    <template id="portal_my_projects" name="Mening Qurilish Loyihalarim">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Loyihalar</t>
+            </t>
+
+            <t t-if="not projects">
+                <div class="alert alert-warning mt8" role="alert">
+                    Sizda hozircha hech qanday qurilish loyihasi mavjud emas.
+                </div>
+            </t>
+            <t t-if="projects">
+                <div class="list-group">
+                    <t t-foreach="projects" t-as="project">
+                        <a t-attf-href="/my/construction/project/#{project.id}" class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
+                            <div>
+                                <h5 class="mb-1" t-field="project.name"/>
+                                <small class="text-muted">
+                                    <span t-field="project.state" class="badge bg-info"/>
+                                    - <span t-field="project.start_date"/>
+                                </small>
+                            </div>
+                            <small class="text-muted text-end">
+                                <div>Shartnoma: <span t-field="project.budget" t-options='{"widget": "monetary", "display_currency": project.currency_id}'/></div>
+                                <div>Kirim: <span t-field="project.total_income" t-options='{"widget": "monetary", "display_currency": project.currency_id}'/></div>
+                            </small>
+                        </a>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Portal Project Detail / Report -->
+    <template id="portal_construction_report" name="Loyiha Hisoboti">
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
+
+            <t t-set="o_portal_fullwidth_alert" groups="construction_management.group_construction_user">
+                <t t-call="portal.portal_back_in_edit_mode">
+                    <t t-set="backend_url" t-value="'/web#model=construction.project&amp;id=%s&amp;view_type=form' % (project.id)"/>
+                </t>
+            </t>
+
+            <div class="container mt-4">
+                <!-- Header -->
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="my-0">
+                            <span t-field="project.name"/>
+                            <small class="float-end" t-field="project.state" t-options='{"widget": "badge"}'/>
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong>Manzil:</strong> <span t-field="project.address"/><br/>
+                                <strong>Boshlanish sanasi:</strong> <span t-field="project.start_date"/><br/>
+                                <strong>Menejer:</strong> <span t-field="project.user_id"/>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>Shartnoma qiymati:</strong></td>
+                                        <td class="text-end"><span t-field="project.budget" t-options='{"widget": "monetary", "display_currency": project.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Jami kirim (To'langan):</strong></td>
+                                        <td class="text-end text-success"><span t-field="project.total_income" t-options='{"widget": "monetary", "display_currency": project.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Jami xarajat (Sarflangan):</strong></td>
+                                        <td class="text-end text-danger"><span t-field="project.total_expense" t-options='{"widget": "monetary", "display_currency": project.currency_id}'/></td>
+                                    </tr>
+                                    <tr class="border-top">
+                                        <td><strong>Balans:</strong></td>
+                                        <td class="text-end fw-bold">
+                                            <span t-field="project.balance" t-options='{"widget": "monetary", "display_currency": project.currency_id}'
+                                                t-att-class="'text-danger' if project.balance &lt; 0 else 'text-success'"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Income Section -->
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header">
+                        <h4 class="my-0">Kirimlar Tarixi (To'lovlar)</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Sana</th>
+                                    <th>Izoh</th>
+                                    <th class="text-end">Miqdor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="project.income_ids" t-as="income">
+                                    <tr>
+                                        <td><span t-field="income.date"/></td>
+                                        <td><span t-field="income.description"/></td>
+                                        <td class="text-end"><span t-field="income.amount" t-options='{"widget": "monetary", "display_currency": project.currency_id}'/></td>
+                                    </tr>
+                                </t>
+                                <tr class="fw-bold">
+                                    <td colspan="2" class="text-end">Jami:</td>
+                                    <td class="text-end"><span t-field="project.total_income" t-options='{"widget": "monetary", "display_currency": project.currency_id}'/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Stages Breakdown -->
+                <div class="mb-4">
+                    <h3>Bosqichlar bo'yicha Hisobot</h3>
+                    <t t-foreach="stages_data" t-as="sdata">
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h4 class="my-0">
+                                    <span t-esc="sdata['stage'].name"/>
+                                </h4>
+                                <span class="badge bg-secondary fs-6">
+                                    Sarflandi: <span t-esc="sdata['stage_total']" t-options='{"widget": "monetary", "display_currency": project.currency_id}'/>
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <!-- Materials & Services -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>Ishlatilgan Materiallar</h5>
+                                        <ul class="list-group list-group-flush small">
+                                            <t t-foreach="sdata['materials']" t-as="mat">
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <span>
+                                                        <span t-field="mat.product_id.name"/>
+                                                        <span class="text-muted ms-1">(<span t-field="mat.quantity_used"/> birlik)</span>
+                                                    </span>
+                                                    <span t-field="mat.total_price" t-options='{"widget": "monetary", "display_currency": project.currency_id}'/>
+                                                </li>
+                                            </t>
+                                            <t t-if="not sdata['materials']">
+                                                <li class="list-group-item text-muted">Materiallar yo'q</li>
+                                            </t>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Bajarilgan Xizmatlar</h5>
+                                        <ul class="list-group list-group-flush small">
+                                            <t t-foreach="sdata['services']" t-as="svc">
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <span>
+                                                        <span t-field="svc.description"/>
+                                                        <span class="text-muted ms-1">x <span t-field="svc.quantity"/></span>
+                                                    </span>
+                                                    <span t-field="svc.total_price" t-options='{"widget": "monetary", "display_currency": project.currency_id}'/>
+                                                </li>
+                                            </t>
+                                             <t t-if="not sdata['services']">
+                                                <li class="list-group-item text-muted">Xizmatlar yo'q</li>
+                                            </t>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Photos Gallery -->
+                                <div class="mt-4" t-if="sdata['images']">
+                                    <h5>Rasmlar</h5>
+                                    <div class="row g-2">
+                                        <t t-foreach="sdata['images']" t-as="img">
+                                            <div class="col-6 col-md-3">
+                                                <div class="card h-100">
+                                                    <span t-field="img.image" t-options='{"widget": "image", "class": "card-img-top", "style": "max-height: 200px; object-fit: cover;"}'/>
+                                                    <div class="card-body p-2">
+                                                        <div class="small text-muted" t-field="img.upload_date"/>
+                                                        <div class="small text-truncate" t-field="img.name"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+
+    <!-- Portal Home Menu Item -->
+    <template id="portal_my_home_construction" name="Portal My Home: Construction Projects" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Qurilish Loyihalari</t>
+                <t t-set="url" t-value="'/my/construction/projects'"/>
+                <t t-set="placeholder_count" t-value="'construction_count'"/>
+            </t>
+        </xpath>
+    </template>
+</odoo>

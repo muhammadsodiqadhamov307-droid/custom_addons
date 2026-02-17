@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Construction Issue Sequence -->
+        <record id="seq_construction_issue" model="ir.sequence">
+            <field name="name">Construction Issue Sequence</field>
+            <field name="code">construction.issue</field>
+            <field name="prefix">ISS</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

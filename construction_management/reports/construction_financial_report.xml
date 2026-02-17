@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_construction_financial" model="ir.actions.report">
+        <field name="name">Project Financial Report kirim/chiqim</field>
+        <field name="model">construction.project</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">construction_management.report_financial_qs</field>
+        <field name="report_file">construction_management.report_financial_qs</field>
+        <field name="print_report_name">'Financial Report - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_construction_project"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_financial_qs">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center mb-4">
+                            <h2>Project Financial Ledger</h2>
+                            <h4><span t-field="doc.name"/></h4>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <strong>Mijoz:</strong> <span t-field="doc.customer_id"/><br/>
+                                <strong>Sana:</strong> <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+                            </div>
+                            <div class="col-6 text-end">
+                                <h3 t-field="doc.balance" t-att-class="'text-danger' if doc.balance &lt; 0 else 'text-success'"/>
+                                <small>Ostatka</small>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Sana</th>
+                                    <th>Izoh</th>
+                                    <th class="text-end">Kirim</th>
+                                    <th class="text-end">Chiqim</th>
+                                    <th class="text-end">Usluga</th>
+                                    <th class="text-end">Ostatka</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="ledger_lines" t-value="doc.get_project_ledger()"/>
+                                <tr t-foreach="ledger_lines" t-as="line">
+                                    <td style="white-space: nowrap;"><span t-esc="line['date'].strftime('%Y-%m-%d')"/></td>
+                                    <td>
+                                        <span t-if="line['description']" t-esc="line['description']"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-if="line['income'] > 0" t-esc="line['income']" 
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}' class="text-success"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-if="line['expense'] > 0" t-esc="line['expense']" 
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}' class="text-danger"/>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-esc="line['balance']" 
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                                              t-att-class="'text-danger' if line['balance'] &lt; 0 else 'text-success'"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <t t-set="total_income" t-value="sum(line['income'] for line in ledger_lines)"/>
+                            <t t-set="total_expense" t-value="sum(line['expense'] for line in ledger_lines)"/>
+                            <tfoot>
+                                <tr class="fw-bold bg-light border-top">
+                                    <td colspan="2" class="text-end">JAMI:</td>
+                                    <td class="text-end text-success">
+                                        <span t-esc="total_income" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                    <td class="text-end text-danger">
+                                        <span t-esc="total_expense" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                    <td></td>
+                                    <td class="text-end">
+                                        <span t-esc="total_income - total_expense" 
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                                              t-att-class="'text-danger' if (total_income - total_expense) &lt; 0 else 'text-success'"/>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

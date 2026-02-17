@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Demolition (Demontaj) -->
+        <record id="tpl_demontaj_concrete_screed_50mm" model="construction.stage.product.template">
+            <field name="name">Разборка бетонных стяжек толщ. 50мм</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_concrete_screed_50mm"/>
+        </record>
+        <record id="tpl_demontaj_brick_opening" model="construction.stage.product.template">
+            <field name="name">Пробивка проем конструкция из кирпича</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_brick_opening"/>
+        </record>
+        <record id="tpl_demontaj_brick_wall_disassembly" model="construction.stage.product.template">
+            <field name="name">Разборка кладки стен из кирпича</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_brick_wall_disassembly"/>
+        </record>
+        <record id="tpl_demontaj_waste_loading" model="construction.stage.product.template">
+            <field name="name">Погрузка мусор строительный</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_waste_loading"/>
+        </record>
+        <record id="tpl_demontaj_brick_wall_half" model="construction.stage.product.template">
+            <field name="name">Кирпичных стен в полкирпича</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_brick_wall_half"/>
+        </record>
+        <record id="tpl_demontaj_brick_wall_one" model="construction.stage.product.template">
+            <field name="name">Кирпичных стен в кирпич</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_brick_wall_one"/>
+        </record>
+        <record id="tpl_demontaj_brick_wall_two" model="construction.stage.product.template">
+            <field name="name">Кирпичных стен в 2 кирпича</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_brick_wall_two"/>
+        </record>
+        <record id="tpl_demontaj_foam_block" model="construction.stage.product.template">
+            <field name="name">Стен из пеноблока</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_foam_block"/>
+        </record>
+        <record id="tpl_demontaj_concrete_partition_8cm" model="construction.stage.product.template">
+            <field name="name">Бетонных перегородок толщиной до 8 см</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_concrete_partition_8cm"/>
+        </record>
+        <record id="tpl_demontaj_concrete_sill" model="construction.stage.product.template">
+            <field name="name">Удаление подоконной части из бетона</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_concrete_sill"/>
+        </record>
+        <record id="tpl_demontaj_brick_sill" model="construction.stage.product.template">
+            <field name="name">Удаление подоконной части из кирпича</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_brick_sill"/>
+        </record>
+        <record id="tpl_demontaj_tile_old" model="construction.stage.product.template">
+            <field name="name">Старой плитки</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_tile_old"/>
+        </record>
+        <record id="tpl_demontaj_drywall_box" model="construction.stage.product.template">
+            <field name="name">Короба из гипсокартона</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_drywall_box"/>
+        </record>
+        <record id="tpl_demontaj_ceiling_armstrong" model="construction.stage.product.template">
+            <field name="name">Потолка “ARMSTRONG”</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_ceiling_armstrong"/>
+        </record>
+        <record id="tpl_demontaj_ceiling_drywall" model="construction.stage.product.template">
+            <field name="name">Потолка из гипсокартона</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_ceiling_drywall"/>
+        </record>
+        <record id="tpl_demontaj_ceiling_rack" model="construction.stage.product.template">
+            <field name="name">Реечного потолка</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_ceiling_rack"/>
+        </record>
+        <record id="tpl_demontaj_drywall" model="construction.stage.product.template">
+            <field name="name">Гипсокартона</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_drywall"/>
+        </record>
+        <record id="tpl_demontaj_partition_gkl" model="construction.stage.product.template">
+            <field name="name">Перегородки ГКЛ</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_partition_gkl"/>
+        </record>
+        <record id="tpl_demontaj_laminate" model="construction.stage.product.template">
+            <field name="name">Ламината, паркетной доски</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_laminate"/>
+        </record>
+        <record id="tpl_demontaj_linoleum" model="construction.stage.product.template">
+            <field name="name">Линолеума</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_linoleum"/>
+        </record>
+        <record id="tpl_demontaj_parquet_piece" model="construction.stage.product.template">
+            <field name="name">Паркета штучного</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_parquet_piece"/>
+        </record>
+        <record id="tpl_demontaj_plinth" model="construction.stage.product.template">
+            <field name="name">Плинтуса</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_plinth"/>
+        </record>
+        <record id="tpl_demontaj_floor_wood" model="construction.stage.product.template">
+            <field name="name">Полов деревянных</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_floor_wood"/>
+        </record>
+        <record id="tpl_demontaj_concrete_screed_more_3cm" model="construction.stage.product.template">
+            <field name="name">Бетонной стяжки (более 3 см)</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_concrete_screed_more_3cm"/>
+        </record>
+        <record id="tpl_demontaj_concrete_screed_less_3cm" model="construction.stage.product.template">
+            <field name="name">Бетонной стяжки (до 3 см)</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_concrete_screed_less_3cm"/>
+        </record>
+        <record id="tpl_demontaj_plaster_old" model="construction.stage.product.template">
+            <field name="name">Старой штукатурки</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_plaster_old"/>
+        </record>
+        <record id="tpl_demontaj_wallpaper" model="construction.stage.product.template">
+            <field name="name">Снятие обоев</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_wallpaper"/>
+        </record>
+        <record id="tpl_demontaj_paint_water" model="construction.stage.product.template">
+            <field name="name">Снятие водоэмульсионные краски</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_paint_water"/>
+        </record>
+        <record id="tpl_demontaj_paint_oil" model="construction.stage.product.template">
+            <field name="name">Снятие масляной краски</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_paint_oil"/>
+        </record>
+        <record id="tpl_demontaj_whitewash" model="construction.stage.product.template">
+            <field name="name">Снятие старой побелки</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_whitewash"/>
+        </record>
+        <record id="tpl_demontaj_putty" model="construction.stage.product.template">
+            <field name="name">Шпатлевки</field>
+            <field name="stage_type">demontaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_demontaj_putty"/>
+        </record>
+
+
+        <!-- Mounting (Montaj) -->
+        <record id="tpl_montaj_gasblock" model="construction.stage.product.template">
+            <field name="name">Кладка газоблоков</field>
+            <field name="stage_type">montaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_montaj_gasblock"/>
+        </record>
+        <record id="tpl_montaj_brick" model="construction.stage.product.template">
+            <field name="name">Кладка кирпича</field>
+            <field name="stage_type">montaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_montaj_brick"/>
+        </record>
+        <record id="tpl_montaj_welding" model="construction.stage.product.template">
+            <field name="name">Сварка</field>
+            <field name="stage_type">montaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_montaj_welding"/>
+        </record>
+        <record id="tpl_montaj_onion" model="construction.stage.product.template">
+            <field name="name">Лук</field>
+            <field name="stage_type">montaj</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_montaj_onion"/>
+        </record>
+
+        <!-- Mounting Materials (Montaj) -->
+        <record id="tpl_montaj_material_gasblock" model="construction.stage.product.template">
+            <field name="name">Газоблок</field>
+            <field name="stage_type">montaj</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_montaj_gasblock"/>
+        </record>
+        <record id="tpl_montaj_material_glue_gasblock" model="construction.stage.product.template">
+            <field name="name">Клей для газоблока</field>
+            <field name="stage_type">montaj</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_montaj_glue_gasblock"/>
+        </record>
+        <record id="tpl_montaj_material_mesh" model="construction.stage.product.template">
+            <field name="name">Армирующая сетка</field>
+            <field name="stage_type">montaj</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_montaj_mesh"/>
+        </record>
+        <record id="tpl_montaj_material_rebar" model="construction.stage.product.template">
+            <field name="name">Арматура Ø6–8 мм</field>
+            <field name="stage_type">montaj</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_montaj_rebar"/>
+        </record>
+        <record id="tpl_montaj_material_brick" model="construction.stage.product.template">
+            <field name="name">Кирпич</field>
+            <field name="stage_type">montaj</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_montaj_brick"/>
+        </record>
+        <record id="tpl_montaj_material_mortar" model="construction.stage.product.template">
+            <field name="name">Цементно-песчаный раствор</field>
+            <field name="stage_type">montaj</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_montaj_mortar"/>
+        </record>
+
+        <!-- Plumbing Services (Santehnika Accessories) -->
+        <record id="tpl_plumbing_install_installation" model="construction.stage.product.template">
+            <field name="name">Установка инсталляции</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_plumbing_install_installation"/>
+        </record>
+        <record id="tpl_plumbing_hidden_shower" model="construction.stage.product.template">
+            <field name="name">Скрытый гиг душ монтаж</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_plumbing_hidden_shower"/>
+        </record>
+        <record id="tpl_plumbing_boiler" model="construction.stage.product.template">
+            <field name="name">Котёл установка</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_plumbing_boiler"/>
+        </record>
+        <record id="tpl_plumbing_shower_head" model="construction.stage.product.template">
+            <field name="name">Лейка для душа монтаж</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_plumbing_shower_head"/>
+        </record>
+        <record id="tpl_plumbing_toilet" model="construction.stage.product.template">
+            <field name="name">Унитаз установка</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_plumbing_toilet"/>
+        </record>
+        <record id="tpl_plumbing_bath" model="construction.stage.product.template">
+            <field name="name">Ванна установка</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_plumbing_bath"/>
+        </record>
+        <record id="tpl_plumbing_sink" model="construction.stage.product.template">
+            <field name="name">Установка раковины</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_plumbing_sink"/>
+        </record>
+        <record id="tpl_plumbing_mixer" model="construction.stage.product.template">
+            <field name="name">Установка смесителя</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_plumbing_mixer"/>
+        </record>
+        <record id="tpl_plumbing_shower_cabin" model="construction.stage.product.template">
+            <field name="name">Установка душевой кабины</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_plumbing_shower_cabin"/>
+        </record>
+        <record id="tpl_plumbing_shower_system" model="construction.stage.product.template">
+            <field name="name">Установка душевой системы</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_plumbing_shower_system"/>
+        </record>
+        <record id="tpl_plumbing_siphon" model="construction.stage.product.template">
+            <field name="name">Установка сифона</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_plumbing_siphon"/>
+        </record>
+
+        <!-- Plumbing Materials (Santehnika Accessories) -->
+        <record id="tpl_plumbing_material_installation" model="construction.stage.product.template">
+            <field name="name">Инсталляция для унитаза</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_installation"/>
+        </record>
+        <record id="tpl_plumbing_material_hidden_shower_kit" model="construction.stage.product.template">
+            <field name="name">Скрытый гиг душ</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_hidden_shower_kit"/>
+        </record>
+        <record id="tpl_plumbing_material_bath" model="construction.stage.product.template">
+            <field name="name">Ванна</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_bath"/>
+        </record>
+        <record id="tpl_plumbing_material_toilet" model="construction.stage.product.template">
+            <field name="name">Унитаз</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_toilet"/>
+        </record>
+        <record id="tpl_plumbing_material_hygienic_shower" model="construction.stage.product.template">
+            <field name="name">Гиг душ</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_hygienic_shower"/>
+        </record>
+        <record id="tpl_plumbing_material_mixer" model="construction.stage.product.template">
+            <field name="name">Смеситель</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_mixer"/>
+        </record>
+        <record id="tpl_plumbing_material_shower_kit" model="construction.stage.product.template">
+            <field name="name">Душ комплект</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_shower_kit"/>
+        </record>
+        <record id="tpl_plumbing_material_mixer_gas" model="construction.stage.product.template">
+            <field name="name">Смеситель. Газ.</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_mixer_gas"/>
+        </record>
+        <record id="tpl_plumbing_material_water_filter" model="construction.stage.product.template">
+            <field name="name">Фильтр для воды</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_water_filter"/>
+        </record>
+        <record id="tpl_plumbing_material_ariston" model="construction.stage.product.template">
+            <field name="name">Аристон</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_ariston"/>
+        </record>
+        <record id="tpl_plumbing_material_washbasin" model="construction.stage.product.template">
+            <field name="name">Унвалник</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_washbasin"/>
+        </record>
+        <record id="tpl_plumbing_material_paper_holder" model="construction.stage.product.template">
+            <field name="name">Бумага держатель</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_paper_holder"/>
+        </record>
+        <record id="tpl_plumbing_material_brush" model="construction.stage.product.template">
+            <field name="name">Шотка</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_brush"/>
+        </record>
+        <record id="tpl_plumbing_material_towel_warmer" model="construction.stage.product.template">
+            <field name="name">Полотенс сушитель</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_towel_warmer"/>
+        </record>
+        <record id="tpl_plumbing_material_trash_can" model="construction.stage.product.template">
+            <field name="name">Урна для мусора</field>
+            <field name="stage_type">santehnika_acc</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_plumbing_trash_can"/>
+        </record>
+
+        <!-- Heating Services (Otoplenie) -->
+        <record id="tpl_heating_warm_floor" model="construction.stage.product.template">
+            <field name="name">Тёплый пол</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_heating_warm_floor"/>
+        </record>
+        <record id="tpl_heating_collector_install" model="construction.stage.product.template">
+            <field name="name">Коллектор установка</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_heating_collector_install"/>
+        </record>
+        <record id="tpl_heating_collector_cabinet" model="construction.stage.product.template">
+            <field name="name">Коллектор шкаф установка</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_heating_collector_cabinet"/>
+        </record>
+        <record id="tpl_heating_tech_cabinet" model="construction.stage.product.template">
+            <field name="name">Сборка технического шкафа</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">service</field>
+            <field name="product_tmpl_id" ref="service_heating_tech_cabinet"/>
+        </record>
+
+        <!-- Heating Materials (Otoplenie) -->
+        <record id="tpl_heating_material_insulation" model="construction.stage.product.template">
+            <field name="name">Изоляция теплый пол</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_insulation"/>
+        </record>
+        <record id="tpl_heating_material_hydro_barrier" model="construction.stage.product.template">
+            <field name="name">Гидро паробарьер</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_hydro_barrier"/>
+        </record>
+        <record id="tpl_heating_material_foam_xps" model="construction.stage.product.template">
+            <field name="name">Пенопласт ХПС</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_foam_xps"/>
+        </record>
+        <record id="tpl_heating_material_floor_hose" model="construction.stage.product.template">
+            <field name="name">Тёплый пол шланг</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_floor_hose"/>
+        </record>
+        <record id="tpl_heating_material_floor_cable" model="construction.stage.product.template">
+            <field name="name">Теплый пол кабель</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_floor_cable"/>
+        </record>
+        <record id="tpl_heating_material_staple" model="construction.stage.product.template">
+            <field name="name">Скоба</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_staple"/>
+        </record>
+        <record id="tpl_heating_material_sensor_cable" model="construction.stage.product.template">
+            <field name="name">Датчик терморегулятора кабель</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_sensor_cable"/>
+        </record>
+        <record id="tpl_heating_material_floor_control" model="construction.stage.product.template">
+            <field name="name">Пульт управление теплого пола</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_floor_control"/>
+        </record>
+        <record id="tpl_heating_material_collector_cabinet_item" model="construction.stage.product.template">
+            <field name="name">Шкаф коллектора</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_collector_cabinet_item"/>
+        </record>
+        <record id="tpl_heating_material_collector_flowmeter" model="construction.stage.product.template">
+            <field name="name">Коллектор расходомер</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_collector_flowmeter"/>
+        </record>
+        <record id="tpl_heating_material_collector_air_vent" model="construction.stage.product.template">
+            <field name="name">Коллектор воздушник</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_collector_air_vent"/>
+        </record>
+        <record id="tpl_heating_material_collector_bushing" model="construction.stage.product.template">
+            <field name="name">Втулка для коллектора</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_collector_bushing"/>
+        </record>
+        <record id="tpl_heating_material_crane_thermometer" model="construction.stage.product.template">
+            <field name="name">Кран ракор термометр</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_crane_thermometer"/>
+        </record>
+        <record id="tpl_heating_material_boiler_gas" model="construction.stage.product.template">
+            <field name="name">Котёл</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_boiler_gas"/>
+        </record>
+        <record id="tpl_heating_material_boiler_electric" model="construction.stage.product.template">
+            <field name="name">Бойлер</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_boiler_electric"/>
+        </record>
+        <record id="tpl_heating_material_expansion_tank" model="construction.stage.product.template">
+            <field name="name">Расширительный бак</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_expansion_tank"/>
+        </record>
+        <record id="tpl_heating_material_recirc_pump" model="construction.stage.product.template">
+            <field name="name">Рециркуляционный насос</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_recirc_pump"/>
+        </record>
+        <record id="tpl_heating_material_safety_group" model="construction.stage.product.template">
+            <field name="name">Группа безопасности</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_safety_group"/>
+        </record>
+        <record id="tpl_heating_material_american" model="construction.stage.product.template">
+            <field name="name">Американка</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_american"/>
+        </record>
+        <record id="tpl_heating_material_brass_barrel" model="construction.stage.product.template">
+            <field name="name">Бочонок латунный</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_brass_barrel"/>
+        </record>
+        <record id="tpl_heating_material_gas_reducer" model="construction.stage.product.template">
+            <field name="name">Газовый редуктор</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_gas_reducer"/>
+        </record>
+        <record id="tpl_heating_material_gas_filter" model="construction.stage.product.template">
+            <field name="name">Газовый фильтр</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_gas_filter"/>
+        </record>
+        <record id="tpl_heating_material_dielectric_coupling" model="construction.stage.product.template">
+            <field name="name">Диэлектрическая муфта для газа</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_dielectric_coupling"/>
+        </record>
+        <record id="tpl_heating_material_radiator_tap" model="construction.stage.product.template">
+            <field name="name">Кран для радиатора</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_radiator_tap"/>
+        </record>
+        <record id="tpl_heating_material_union_nut" model="construction.stage.product.template">
+            <field name="name">Накидной</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_union_nut"/>
+        </record>
+        <record id="tpl_heating_material_outer_tip" model="construction.stage.product.template">
+            <field name="name">Наконечник наружный</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_outer_tip"/>
+        </record>
+        <record id="tpl_heating_material_check_valve" model="construction.stage.product.template">
+            <field name="name">Обратный клапан</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_check_valve"/>
+        </record>
+        <record id="tpl_heating_material_chimney_elbow" model="construction.stage.product.template">
+            <field name="name">Отвод для дымохода</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_chimney_elbow"/>
+        </record>
+        <record id="tpl_heating_material_reduction_adapter" model="construction.stage.product.template">
+            <field name="name">Переходник редукционный</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_reduction_adapter"/>
+        </record>
+        <record id="tpl_heating_material_safety_valve" model="construction.stage.product.template">
+            <field name="name">Предохранительный клапан</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_safety_valve"/>
+        </record>
+        <record id="tpl_heating_material_voltage_relay" model="construction.stage.product.template">
+            <field name="name">Реле напряжения</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_voltage_relay"/>
+        </record>
+        <record id="tpl_heating_material_ball_valve" model="construction.stage.product.template">
+            <field name="name">Шаровой кран</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_ball_valve"/>
+        </record>
+        <record id="tpl_heating_material_tee" model="construction.stage.product.template">
+            <field name="name">Тройник</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_tee"/>
+        </record>
+        <record id="tpl_heating_material_strainer" model="construction.stage.product.template">
+            <field name="name">Фильтр сетчатый</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_strainer"/>
+        </record>
+        <record id="tpl_heating_material_gas_hose" model="construction.stage.product.template">
+            <field name="name">Шланг для газа</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_gas_hose"/>
+        </record>
+        <record id="tpl_heating_material_stabilizer" model="construction.stage.product.template">
+            <field name="name">Стабилизатор</field>
+            <field name="stage_type">otoplenie</field>
+            <field name="resource_type">material</field>
+            <field name="product_tmpl_id" ref="material_heating_stabilizer"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Tree View -->
+        <record id="view_construction_issue_tree" model="ir.ui.view">
+            <field name="name">construction.issue.tree</field>
+            <field name="model">construction.issue</field>
+            <field name="arch" type="xml">
+                <tree string="Muammolar" decoration-info="state == 'new'" decoration-warning="state == 'in_progress'" decoration-success="state == 'resolved'" decoration-muted="state == 'canceled'">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="stage_id"/>
+                    <field name="task_id"/>
+                    <field name="reported_by"/>
+                    <field name="priority" widget="priority"/>
+                    <field name="state" widget="badge" decoration-info="state == 'new'" decoration-warning="state == 'in_progress'" decoration-success="state == 'resolved'" decoration-muted="state == 'canceled'"/>
+                    <field name="create_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_construction_issue_form" model="ir.ui.view">
+            <field name="name">construction.issue.form</field>
+            <field name="model">construction.issue</field>
+            <field name="arch" type="xml">
+                <form string="Muammo">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="new,in_progress,resolved"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="project_id"/>
+                                <field name="stage_id"/>
+                                <field name="task_id"/>
+                            </group>
+                            <group>
+                                <field name="reported_by"/>
+                                <field name="priority"/>
+                                <field name="resolved_at"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                        </group>
+                        <group string="Rasmlar">
+                            <field name="attachment_ids" widget="many2many_binary" nolabel="1"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_construction_issue" model="ir.actions.act_window">
+            <field name="name">Muammolar</field>
+            <field name="res_model">construction.issue</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Yangi muammo yarating
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem id="menu_construction_issue"
+                  name="Muammolar"
+                  parent="menu_construction_root"
+                  action="action_construction_issue"
+                  sequence="40"/>
+
+    </data>
+</odoo>

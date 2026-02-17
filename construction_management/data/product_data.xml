@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Create Attribute: Diameter -->
+        <record id="product_attribute_diameter" model="product.attribute">
+            <field name="name">Диаметр</field>
+            <field name="create_variant">always</field>
+            <field name="display_type">radio</field>
+        </record>
+
+        <!-- Create Attribute Values -->
+        <record id="product_attribute_value_d_250" model="product.attribute.value">
+            <field name="name">50/250 Д</field>
+            <field name="attribute_id" ref="product_attribute_diameter"/>
+        </record>
+        <record id="product_attribute_value_d_500" model="product.attribute.value">
+            <field name="name">50/500 Д</field>
+            <field name="attribute_id" ref="product_attribute_diameter"/>
+        </record>
+        <record id="product_attribute_value_d_1000" model="product.attribute.value">
+            <field name="name">50/1000 Д</field>
+            <field name="attribute_id" ref="product_attribute_diameter"/>
+        </record>
+        <record id="product_attribute_value_d_2000" model="product.attribute.value">
+            <field name="name">50/2000 Д</field>
+            <field name="attribute_id" ref="product_attribute_diameter"/>
+        </record>
+        <record id="product_attribute_value_d_3000" model="product.attribute.value">
+            <field name="name">50/3000 Д</field>
+            <field name="attribute_id" ref="product_attribute_diameter"/>
+        </record>
+
+        <!-- Create Product Template -->
+        <record id="product_template_truba_comfort" model="product.template">
+            <field name="name">Труба канализационная Comfort</field>
+            <field name="detailed_type">product</field>
+            <field name="list_price">4340.0</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="attribute_line_ids" eval="[(0, 0, {
+                'attribute_id': ref('product_attribute_diameter'),
+                'value_ids': [(6, 0, [
+                    ref('product_attribute_value_d_250'),
+                    ref('product_attribute_value_d_500'),
+                    ref('product_attribute_value_d_1000'),
+                    ref('product_attribute_value_d_2000'),
+                    ref('product_attribute_value_d_3000')
+                ])]
+            })]"/>
+        </record>
+
+        <!-- Set Extra Prices via Function (since PTAVs are auto-created) -->
+        
+        <!-- 50/500: 2650 -->
+        <function model="product.template.attribute.value" name="write">
+            <value model="product.template.attribute.value" search="[
+                ('product_tmpl_id', '=', ref('product_template_truba_comfort')), 
+                ('product_attribute_value_id', '=', ref('product_attribute_value_d_500'))
+            ]"/>
+            <value eval="{'price_extra': 2650.0}"/>
+        </function>
+
+        <!-- 50/1000: 6865 -->
+        <function model="product.template.attribute.value" name="write">
+            <value model="product.template.attribute.value" search="[
+                ('product_tmpl_id', '=', ref('product_template_truba_comfort')), 
+                ('product_attribute_value_id', '=', ref('product_attribute_value_d_1000'))
+            ]"/>
+            <value eval="{'price_extra': 6865.0}"/>
+        </function>
+
+        <!-- 50/2000: 16385 -->
+        <function model="product.template.attribute.value" name="write">
+            <value model="product.template.attribute.value" search="[
+                ('product_tmpl_id', '=', ref('product_template_truba_comfort')), 
+                ('product_attribute_value_id', '=', ref('product_attribute_value_d_2000'))
+            ]"/>
+            <value eval="{'price_extra': 16385.0}"/>
+        </function>
+
+        <!-- 50/3000: 25660 -->
+        <function model="product.template.attribute.value" name="write">
+            <value model="product.template.attribute.value" search="[
+                ('product_tmpl_id', '=', ref('product_template_truba_comfort')), 
+                ('product_attribute_value_id', '=', ref('product_attribute_value_d_3000'))
+            ]"/>
+            <value eval="{'price_extra': 25660.0}"/>
+        </function>
+
+
+    </data>
+</odoo>

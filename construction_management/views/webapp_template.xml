@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="webapp_dashboard" name="Loyiha Paneli">
+        <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+                <script src="https://telegram.org/js/telegram-web-app.js"></script>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+                <style>
+                    body { background-color: var(--tg-theme-bg-color, #f5f5f5); color: var(--tg-theme-text-color, #000); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+                    .card { border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 16px; background-color: var(--tg-theme-secondary-bg-color, #fff); }
+                    .h-value { font-size: 24px; font-weight: bold; }
+                    .text-income { color: #28a745; }
+                    .text-expense { color: #dc3545; }
+                    .nav-pills .nav-link.active { background-color: var(--tg-theme-button-color, #007bff); color: var(--tg-theme-button-text-color, #fff); }
+                    .nav-pills .nav-link { color: var(--tg-theme-text-color, #666); }
+                </style>
+            </head>
+            <body>
+                <div class="container py-3">
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="m-0" t-esc="user.name"/>
+                        <div>
+                            <span class="badge bg-success me-2">v4.0</span>
+                            <span class="badge bg-secondary" id="connection-status">Online</span>
+                        </div>
+                    </div>
+
+                    <!-- Project Selector -->
+                    <select id="project-selector" class="form-select mb-3" onchange="loadProjectData()">
+                        <option value="">Loyiha tanlanmoqda...</option>
+                    </select>
+
+                    <!-- Tabs -->
+                    <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" data-bs-toggle="pill" href="#tab-financial">Moliya</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="pill" href="#tab-progress">Jarayon</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="pill" href="#tab-reports">Hisobot</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!-- Financial Tab -->
+                        <div id="tab-financial" class="tab-pane fade show active">
+                            
+                            <!-- MAIN DASHBOARD VIEW -->
+                            <div id="view-dashboard">
+                                <!-- Totals -->
+                                <div class="card p-3 mb-3">
+                                    <small class="text-muted">Balans</small>
+                                    <div class="h-value" id="val-balance">0</div>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="card p-3 clickable-card" onclick="switchView('income')">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <small class="text-muted">Kirim</small>
+                                                <i class="bi bi-arrow-right-circle text-primary"></i>
+                                            </div>
+                                            <div class="h-value text-income" id="val-income">0</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="card p-3 clickable-card" onclick="switchView('expense')">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <small class="text-muted">Chiqim</small>
+                                                <i class="bi bi-arrow-right-circle text-danger"></i>
+                                            </div>
+                                            <div class="h-value text-expense" id="val-expense">0</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- INCOME DETAIL VIEW -->
+                            <div id="view-income" class="d-none">
+                                <div class="d-flex align-items-center mb-3">
+                                    <button class="btn btn-sm btn-light me-2" onclick="switchView('dashboard')">⬅️ Ortga</button>
+                                    <h5 class="mb-0">Kirimlar Tarixi</h5>
+                                </div>
+                                <div id="income-list-container"></div>
+                            </div>
+
+                            <!-- EXPENSE DETAIL VIEW -->
+                            <div id="view-expense" class="d-none">
+                                <div class="d-flex align-items-center mb-3">
+                                    <button class="btn btn-sm btn-light me-2" onclick="switchView('dashboard')">⬅️ Ortga</button>
+                                    <h5 class="mb-0">Xarajatlar (Bosqichlar)</h5>
+                                </div>
+                                <div id="expense-list-container"></div>
+                            </div>
+
+                        </div>
+
+                        <!-- Progress Tab -->
+                        <div id="tab-progress" class="tab-pane fade">
+                             <div id="stages-container"></div>
+                        </div>
+
+                        <!-- Reports Tab -->
+                        <div id="tab-reports" class="tab-pane fade">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" onclick="requestReport('pdf')">
+                                    📄 PDF Hisobot (Moliya)
+                                </button>
+                                <button class="btn btn-outline-success" onclick="requestReport('excel')">
+                                    📊 Excel (To'liq)
+                                </button>
+                            </div>
+                            <div id="report-status" class="mt-3 text-center small text-muted"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Modal -->
+                <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+                        <div class="modal-content bg-dark text-white">
+                            <div class="modal-header border-0" style="position: absolute; top: 0; right: 0; z-index: 1055;">
+                                <button type="button" class="btn-close btn-close-white m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body d-flex justify-content-center align-items-center p-0">
+                                <img id="fullImage" src="" class="img-fluid" style="max-height: 100vh; max-width: 100vw;" alt="Full Image"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+                <script type="text/javascript">
+                    const TOKEN = "<t t-esc="token"/>";
+                    let currentProjectId = null;
+                    const tg = window.Telegram.WebApp;
+                    tg.expand();
+                    
+                    // --- Logic ---
+                    async function fetchAPI(endpoint, params={}) {
+                        params.token = TOKEN;
+                        // Default to All Time if not specified
+                        if (!params.period) params.period = 'all';
+                        
+                        const qs = new URLSearchParams(params).toString();
+                        const res = await fetch(`/webapp/api/${endpoint}?${qs}`);
+                        return await res.json();
+                    }
+
+                    async function init() {
+                        try {
+                            // Initial fetch with period=all
+                            const data = await fetchAPI('summary', {period: 'all'}); 
+                            
+                            if (data.project) {
+                                currentProjectId = data.project.id;
+                                updateUI(data);
+                                const sel = document.getElementById('project-selector');
+                                sel.innerHTML = `<option value="${data.project.id}" selected="selected">${data.project.name}</option>`;
+                                sel.value = data.project.id;
+                            } else if (data.error) {
+                                console.error('API Error:', data.error);
+                            } else {
+                                console.error('Unknown error: No project data');
+                            }
+                        } catch(e) {
+                            console.error('System Error:', e);
+                        }
+                    }
+
+                    function switchView(viewName) {
+                        // Hide all views
+                        document.getElementById('view-dashboard').classList.add('d-none');
+                        document.getElementById('view-income').classList.add('d-none');
+                        document.getElementById('view-expense').classList.add('d-none');
+                        
+                        // Show selected
+                        document.getElementById('view-' + viewName).classList.remove('d-none');
+                    }
+
+                    function updateUI(data) {
+                        // Finance Totals
+                        document.getElementById('val-balance').textContent = formatMoney(data.project.balance);
+                        document.getElementById('val-income').textContent = formatMoney(data.project.income_period);
+                        document.getElementById('val-expense').textContent = formatMoney(data.project.expense_period);
+
+                        // 1. Income List
+                        const incContainer = document.getElementById('income-list-container');
+                        incContainer.innerHTML = '';
+                        if (data.income_grouped &amp;&amp; data.income_grouped.length &gt; 0) {
+                            data.income_grouped.forEach(group => {
+                                let itemsHtml = '';
+                                group.items.forEach(item => {
+                                    itemsHtml += `
+                                        <div class="d-flex justify-content-between border-bottom py-2">
+                                            <span>${item.description || 'Izohsiz'}</span>
+                                            <span class="text-income fw-bold">+${formatMoney(item.amount)}</span>
+                                        </div>
+                                    `;
+                                });
+                                incContainer.innerHTML += `
+                                    <div class="card p-3 mb-2">
+                                        <div class="fw-bold text-muted mb-1">${group.date}</div>
+                                        ${itemsHtml}
+                                        <div class="text-end fw-bold mt-1">Jami: ${formatMoney(group.total)}</div>
+                                    </div>
+                                `;
+                            });
+                        } else {
+                            incContainer.innerHTML = '<div class="text-center text-muted p-2">Kirim mavjud emas</div>';
+                        }
+
+                        // 2. Expense List (Separated Materials &amp; Services)
+                        const expContainer = document.getElementById('expense-list-container');
+                        expContainer.innerHTML = '';
+                        if (data.expense_by_stage &amp;&amp; data.expense_by_stage.length &gt; 0) {
+                            data.expense_by_stage.forEach((stage, index) => {
+                                // Filter items
+                                const materials = stage.items.filter(i => i.type === 'material');
+                                const services = stage.items.filter(i => i.type === 'service');
+                                
+                                let contentHtml = '';
+                                
+                                // Materials Section
+                                if (materials.length > 0) {
+                                    const matTotal = materials.reduce((sum, m) => sum + m.amount, 0);
+                                    let matRows = '';
+                                    materials.forEach(m => {
+                                        matRows += `
+                                            <div class="d-flex justify-content-between py-1 small">
+                                                <span>${m.name}</span>
+                                                <span class="text-danger">-${formatMoney(m.amount)}</span>
+                                            </div>
+                                        `;
+                                    });
+                                    contentHtml += `
+                                        <div class="mb-2">
+                                            <div class="d-flex justify-content-between align-items-center border-bottom mb-1">
+                                                <div class="small fw-bold text-uppercase text-muted">Materiallar</div>
+                                                <div class="small fw-bold text-danger">-${formatMoney(matTotal)}</div>
+                                            </div>
+                                            ${matRows}
+                                        </div>
+                                    `;
+                                }
+
+                                // Services Section
+                                if (services.length > 0) {
+                                    const svcTotal = services.reduce((sum, s) => sum + s.amount, 0);
+                                    let svcRows = '';
+                                    services.forEach(s => {
+                                        svcRows += `
+                                            <div class="d-flex justify-content-between py-1 small">
+                                                <span>${s.name}</span>
+                                                <span class="text-danger">-${formatMoney(s.amount)}</span>
+                                            </div>
+                                        `;
+                                    });
+                                    contentHtml += `
+                                        <div class="mb-2">
+                                            <div class="d-flex justify-content-between align-items-center border-bottom mb-1 mt-2">
+                                                <div class="small fw-bold text-uppercase text-muted">Xizmatlar</div>
+                                                <div class="small fw-bold text-danger">-${formatMoney(svcTotal)}</div>
+                                            </div>
+                                            ${svcRows}
+                                        </div>
+                                    `;
+                                }
+                                
+                                if (contentHtml === '') contentHtml = '<div class="small text-muted">Hozircha xarajat yo\'q</div>';
+
+                                const collapseId = `collapse-stage-${index}`;
+                                // FIX: Added text-dark to header to ensure visibility
+                                expContainer.innerHTML += `
+                                    <div class="card mb-2 overflow-hidden">
+                                        <div class="p-3 d-flex justify-content-between align-items-center bg-light text-dark" data-bs-toggle="collapse" data-bs-target="#${collapseId}" style="cursor:pointer">
+                                            <strong class="text-dark">${stage.name}</strong>
+                                            <span class="text-danger fw-bold">-${formatMoney(stage.total)}</span>
+                                        </div>
+                                        <div id="${collapseId}" class="collapse">
+                                            <div class="card-body pt-2">
+                                                ${contentHtml}
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                        } else {
+                            expContainer.innerHTML = '<div class="text-center text-muted p-2">Xarajat mavjud emas</div>';
+                        }
+
+                        // Progress
+                        const c = document.getElementById('stages-container');
+                        c.innerHTML = '';
+                        if (data.stages &amp;&amp; data.stages.length &gt; 0) {
+                            data.stages.forEach((s, index) => {
+                                let badge = 'bg-secondary';
+                                if (s.status === 'completed') badge = 'bg-success';
+                                if (s.status === 'in_progress') badge = 'bg-primary';
+                                
+                                // Build Tasks HTML
+                                let tasksHtml = '';
+                                if (s.tasks &amp;&amp; s.tasks.length &gt; 0) {
+                                    s.tasks.forEach(t => {
+                                        let itemsHtml = '';
+                                        if (t.items &amp;&amp; t.items.length &gt; 0) {
+                                            t.items.forEach(i => {
+                                                // Toggle Switch Visualization (ReadOnly)
+                                                // Using simple emoji or styled checkbox
+                                                const icon = i.is_done ? '✅' : '⬜'; 
+                                                const clr = i.is_done ? 'text-success' : 'text-muted';
+                                                
+                                                itemsHtml += `
+                                                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom border-light">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="me-2 fs-5">${icon}</span>
+                                                            <div class="d-flex flex-column">
+                                                                <span class="${clr}">${i.name}</span>
+                                                                ${i.description ? `<small class="text-muted" style="font-size:0.75rem">${i.description}</small>` : ''}
+                                                            </div>
+                                                        </div>
+                                                        ${i.total > 0 ? `<div class="small fw-bold text-muted">${formatMoney(i.total)}</div>` : ''}
+                                                    </div>
+                                                `;
+                                            });
+                                        } else {
+                                             itemsHtml = '<div class="small text-muted fst-italic ps-4">Vazifalar yo\'q</div>';
+                                        }
+                                        
+                                        tasksHtml += `
+                                            <div class="mt-3">
+                                                <h6 class="fw-bold text-dark border-bottom pb-1 mb-2">${t.name}</h6>
+                                                <div class="ps-1">
+                                                    ${itemsHtml}
+                                                </div>
+                                            </div>
+                                        `;
+                                    });
+                                } else {
+                                    tasksHtml = '<div class="text-center text-muted small py-2">Vazifalar topilmadi</div>';
+                                }
+
+                                 const collapseId = `stage-progress-${index}`;
+                                 
+                                 // Translate status to Uzbek
+                                 const statusUz = {
+                                     'completed': 'Yakunlandi',
+                                     'in_progress': 'Jarayonda',
+                                     'pending': 'Kutilmoqda'
+                                 };
+                                 
+                                 c.innerHTML += `
+                                     <div class="card mb-2 overflow-hidden">
+                                         <div class="p-3 d-flex justify-content-between align-items-center bg-light text-dark" 
+                                              data-bs-toggle="collapse" data-bs-target="#${collapseId}" style="cursor:pointer">
+                                             <div>
+                                                 <div class="fw-bold text-dark">${s.name}</div>
+                                                 <div class="small text-muted">Jarayon: ${s.progress}%</div>
+                                                 <div class="progress mt-1" style="height: 4px; width: 100px;">
+                                                     <div class="progress-bar ${badge}" role="progressbar" style="width: ${s.progress}%"></div>
+                                                 </div>
+                                             </div>
+                                             <span class="badge ${badge}">${statusUz[s.status] || s.status}</span>
+                                         </div>
+                                        <div id="${collapseId}" class="collapse">
+                                            <div class="card-body pt-2">
+                                                ${(s.images &amp;&amp; s.images.length > 0) ? `
+                                                <div class="mb-3">
+                                                    <div class="d-flex overflow-auto pb-2" style="gap: 10px;">
+                                                        ${s.images.map(img => `
+                                                            <div class="flex-shrink-0" style="width: 100px; height: 100px; cursor: pointer;" onclick="openImage('${img.url}')">
+                                                                <img src="${img.url}" class="w-100 h-100 rounded border object-fit-cover" alt="Rasm"/>
+                                                            </div>
+                                                        `).join('')}
+                                                    </div>
+                                                </div>
+                                                ` : ''}
+                                                ${tasksHtml}
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                        } else {
+                            c.innerHTML = '<div class="text-center text-muted p-3">Bosqichlar mavjud emas</div>';
+                        }
+                    }
+
+                    function formatMoney(amount) {
+                         // Simple formatter
+                        return new Intl.NumberFormat('uz-UZ').format(amount) + " so'm";
+                    }
+
+                    function openImage(url) {
+                        const modalElement = document.getElementById('imageModal');
+                        const modal = new bootstrap.Modal(modalElement);
+                        document.getElementById('fullImage').src = url;
+                        modal.show();
+                    }
+
+                    function requestReport(type) {
+                        if (!currentProjectId) {
+                            alert('Loyiha tanlanmagan');
+                            return;
+                        }
+                        
+                        // Show loading message
+                        const statusDiv = document.getElementById('report-status');
+                        statusDiv.textContent = type === 'pdf' ? '📄 PDF tayyorlanmoqda...' : '📊 Excel tayyorlanmoqda...';
+                        statusDiv.className = 'mt-3 text-center small text-primary';
+                        
+                        // Send callback to bot
+                        const callbackData = `report_${type}_${currentProjectId}`;
+                        
+                        // Always use HTTP request to keep WebApp open and provide feedback
+                        fetch(`/webapp/api/request_report`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                jsonrpc: "2.0",
+                                method: "call",
+                                params: {
+                                    token: TOKEN,
+                                    project_id: currentProjectId,
+                                    report_type: type
+                                }
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.result &amp;&amp; data.result.success) {
+                                statusDiv.textContent = '✅ Hisobot Telegram chatda yuborildi!';
+                                statusDiv.className = 'mt-3 text-center small text-success';
+                            } else {
+                                const errorMsg = data.result ? data.result.error : (data.error ? data.error.message : 'Noma\'lum xato');
+                                statusDiv.textContent = '❌ Xatolik: ' + errorMsg;
+                                statusDiv.className = 'mt-3 text-center small text-danger';
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            statusDiv.textContent = '❌ Aloqa xatoligi';
+                            statusDiv.className = 'mt-3 text-center small text-danger';
+                        });
+                    }
+
+                    init();
+                </script>
+            </body>
+        </html>
+    </template>
+</odoo>

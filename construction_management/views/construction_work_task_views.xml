@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- SEARCH VIEW -->
+        <record id="view_construction_work_task_search" model="ir.ui.view">
+            <field name="name">construction.work.task.search</field>
+            <field name="model">construction.work.task</field>
+            <field name="arch" type="xml">
+                <search string="Vazifalar">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="assignee_id"/>
+                    
+                    <filter string="Yangi" name="state_new" domain="[('state', '=', 'new')]"/>
+                    <filter string="Jarayonda" name="state_in_progress" domain="[('state', '=', 'in_progress')]"/>
+                    <filter string="Bajarildi" name="state_done" domain="[('state', '=', 'done')]"/>
+                    
+                    <separator/>
+                    <filter string="Usta vazifalari" name="role_worker" domain="[('assignee_role', '=', 'worker')]"/>
+                    <filter string="Dizayner vazifalari" name="role_designer" domain="[('assignee_role', '=', 'designer')]"/>
+                    <filter string="Prorab vazifalari" name="role_foreman" domain="[('assignee_role', '=', 'foreman')]"/>
+                    <filter string="Snab vazifalari" name="role_supply" domain="[('assignee_role', '=', 'supply')]"/>
+                    <filter string="Mijoz vazifalari" name="role_client" domain="[('assignee_role', '=', 'client')]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter string="Holat" name="group_state" context="{'group_by': 'state'}"/>
+                        <filter string="Kim uchun" name="group_role" context="{'group_by': 'assignee_role'}"/>
+                        <filter string="Mas’ul" name="group_assignee" context="{'group_by': 'assignee_id'}"/>
+                        <filter string="Bosqich" name="group_stage" context="{'group_by': 'stage_id'}"/>
+                        <filter string="Loyiha" name="group_project" context="{'group_by': 'project_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- TREE VIEW -->
+        <record id="view_construction_work_task_tree" model="ir.ui.view">
+            <field name="name">construction.work.task.tree</field>
+            <field name="model">construction.work.task</field>
+            <field name="arch" type="xml">
+                <tree string="Vazifalar" decoration-success="state == 'done'" decoration-warning="state == 'in_progress'">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="assignee_role"/>
+                    <field name="assignee_id"/>
+                    <field name="stage_id"/>
+                    <field name="deadline_date"/>
+                    <field name="state" widget="badge" decoration-info="state == 'new'" decoration-success="state == 'done'" decoration-warning="state == 'in_progress'"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- FORM VIEW -->
+        <record id="view_construction_work_task_form" model="ir.ui.view">
+            <field name="name">construction.work.task.form</field>
+            <field name="model">construction.work.task</field>
+            <field name="arch" type="xml">
+                <form string="Vazifa">
+                    <header>
+                        <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="Vazifa nomi..."/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="project_id"/>
+                                <field name="stage_id"/>
+                                <field name="deadline_date"/>
+                            </group>
+                            <group>
+                                <field name="assignee_role"/>
+                                <field name="assignee_id"/>
+                                <field name="service_task_id" groups="base.group_no_one"/>
+                            </group>
+                        </group>
+                        <group>
+                             <group invisible="state != 'done'">
+                                <field name="done_date"/>
+                             </group>
+                        </group>
+                        <notebook>
+                            <page string="Tavsif">
+                                <field name="description" placeholder="Vazifa haqida batafsil..."/>
+                            </page>
+                            <page string="Bajarilish izohi">
+                                <field name="done_note"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- ACTION -->
+        <record id="action_construction_work_task" model="ir.actions.act_window">
+            <field name="name">Vazifalar</field>
+            <field name="res_model">construction.work.task</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- MENU -->
+        <menuitem id="menu_construction_work_task"
+                  name="Vazifalar"
+                  parent="menu_construction_root"
+                  action="action_construction_work_task"
+                  sequence="25"/> <!-- After Projects (10) or Kirim (20) -->
+
+    </data>
+</odoo>

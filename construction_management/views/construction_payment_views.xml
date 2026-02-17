@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_construction_payment_form" model="ir.ui.view">
+        <field name="name">construction.payment.form</field>
+        <field name="model">construction.payment</field>
+        <field name="arch" type="xml">
+            <form string="Construction Payment">
+                <header>
+                    <button name="action_confirm" string="Confirm" 
+                            type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_create_invoice" string="Create Invoice" 
+                            type="object" class="oe_highlight" invisible="state != 'confirmed'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="amount"/>
+                            <field name="payment_date"/>
+                            <field name="related_stage_id" domain="[('project_id', '=', project_id)]"/>
+                        </group>
+                        <group>
+                            <field name="payment_method"/>
+                            <field name="payment_type"/>
+                            <field name="reference"/>
+                            <field name="invoice_id"/>
+                        </group>
+                    </group>
+                    <field name="notes" placeholder="Notes..."/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                    <field name="activity_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_construction_payment_tree" model="ir.ui.view">
+        <field name="name">construction.payment.tree</field>
+        <field name="model">construction.payment</field>
+        <field name="arch" type="xml">
+            <tree string="Payments">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="payment_date"/>
+                <field name="amount" sum="Total Amount"/>
+                <field name="payment_method"/>
+                <field name="payment_type"/>
+                <field name="state" decoration-info="state=='draft'" 
+                       decoration-success="state in ('confirmed', 'reconciled')"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_construction_payment_search" model="ir.ui.view">
+        <field name="name">construction.payment.search</field>
+        <field name="model">construction.payment</field>
+        <field name="arch" type="xml">
+            <search string="Payments">
+                <field name="name"/>
+                <field name="project_id"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Confirmed" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'payment_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action -->
+    <record id="action_construction_uom" model="ir.actions.act_window">
+        <field name="name">O'lchov birliklari</field>
+        <field name="res_model">construction.uom</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Yangi o'lchov birligi yarating
+            </p>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_construction_uom_tree" model="ir.ui.view">
+        <field name="name">construction.uom.tree</field>
+        <field name="model">construction.uom</field>
+        <field name="arch" type="xml">
+            <tree string="O'lchov birliklari" editable="bottom">
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_construction_uom_form" model="ir.ui.view">
+        <field name="name">construction.uom.form</field>
+        <field name="model">construction.uom</field>
+        <field name="arch" type="xml">
+            <form string="O'lchov birligi">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_construction_uom_search" model="ir.ui.view">
+        <field name="name">construction.uom.search</field>
+        <field name="model">construction.uom</field>
+        <field name="arch" type="xml">
+            <search string="Qidirish">
+                <field name="name"/>
+                <filter string="Faol" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Faol emas" name="inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_construction_uom"
+              name="O'lchov birliklari"
+              parent="menu_construction_config"
+              action="action_construction_uom"
+              sequence="10"/>
+</odoo>

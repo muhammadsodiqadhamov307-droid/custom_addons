@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- Demolition Services (Demontaj) -->
+        <record id="service_demontaj_concrete_screed_50mm" model="product.template">
+            <field name="name">Разборка бетонных стяжек толщ. 50мм</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_brick_opening" model="product.template">
+            <field name="name">Пробивка проем конструкция из кирпича</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_cubic_meter"/>
+            <field name="uom_po_id" ref="uom.product_uom_cubic_meter"/>
+        </record>
+        <record id="service_demontaj_brick_wall_disassembly" model="product.template">
+            <field name="name">Разборка кладки стен из кирпича</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_cubic_meter"/>
+            <field name="uom_po_id" ref="uom.product_uom_cubic_meter"/>
+        </record>
+        <record id="service_demontaj_waste_loading" model="product.template">
+            <field name="name">Погрузка мусор строительный</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_ton"/>
+            <field name="uom_po_id" ref="uom.product_uom_ton"/>
+        </record>
+        <record id="service_demontaj_brick_wall_half" model="product.template">
+            <field name="name">Демонтаж кирпичных стен в полкирпича</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_brick_wall_one" model="product.template">
+            <field name="name">Демонтаж кирпичных стен в кирпич</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_brick_wall_two" model="product.template">
+            <field name="name">Демонтаж кирпичных стен в 2 кирпича</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_foam_block" model="product.template">
+            <field name="name">Демонтаж стен из пеноблока</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_concrete_partition_8cm" model="product.template">
+            <field name="name">Демонтаж бетонных перегородок толщиной до 8 см</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_concrete_sill" model="product.template">
+            <field name="name">Удаление подоконной части из бетона</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_brick_sill" model="product.template">
+            <field name="name">Удаление подоконной части из кирпича</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_tile_old" model="product.template">
+            <field name="name">Демонтаж старой плитки</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_drywall_box" model="product.template">
+            <field name="name">Демонтаж короба из гипсокартона</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_ceiling_armstrong" model="product.template">
+            <field name="name">Демонтаж потолка “ARMSTRONG”</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_ceiling_drywall" model="product.template">
+            <field name="name">Демонтаж потолка из гипсокартона</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_ceiling_rack" model="product.template">
+            <field name="name">Демонтаж реечного потолка</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_drywall" model="product.template">
+            <field name="name">Демонтаж гипсокартона</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_partition_gkl" model="product.template">
+            <field name="name">Демонтаж перегородки ГКЛ</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_laminate" model="product.template">
+            <field name="name">Демонтаж ламината, паркетной доски</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_linoleum" model="product.template">
+            <field name="name">Демонтаж линолеума</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_parquet_piece" model="product.template">
+            <field name="name">Демонтаж паркета штучного</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_plinth" model="product.template">
+            <field name="name">Демонтаж плинтуса</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_meter"/>
+            <field name="uom_po_id" ref="uom.product_uom_meter"/>
+        </record>
+        <record id="service_demontaj_floor_wood" model="product.template">
+            <field name="name">Демонтаж полов деревянных</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_concrete_screed_more_3cm" model="product.template">
+            <field name="name">Демонтаж бетонной стяжки (более 3 см)</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_concrete_screed_less_3cm" model="product.template">
+            <field name="name">Демонтаж бетонной стяжки (до 3 см)</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_plaster_old" model="product.template">
+            <field name="name">Демонтаж старой штукатурки</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_wallpaper" model="product.template">
+            <field name="name">Снятие обоев</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_paint_water" model="product.template">
+            <field name="name">Снятие водоэмульсионные краски</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_paint_oil" model="product.template">
+            <field name="name">Снятие масляной краски</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_whitewash" model="product.template">
+            <field name="name">Снятие старой побелки</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_demontaj_putty" model="product.template">
+            <field name="name">Демонтаж шпатлевки</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+
+        <!-- Mounting Services (Montaj) -->
+        <record id="service_montaj_gasblock" model="product.template">
+            <field name="name">Кладка газоблоков</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_montaj_brick" model="product.template">
+            <field name="name">Кладка кирпича</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_montaj_welding" model="product.template">
+            <field name="name">Сварка</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_day"/>
+            <field name="uom_po_id" ref="uom.product_uom_day"/>
+        </record>
+        <record id="service_montaj_onion" model="product.template">
+            <field name="name">Лук</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+
+        </record>
+
+        <!-- Mounting Materials (Montaj) -->
+        <record id="material_montaj_gasblock" model="product.template">
+            <field name="name">Газоблок</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_montaj_glue_gasblock" model="product.template">
+            <field name="name">Клей для газоблока</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_montaj_mesh" model="product.template">
+            <field name="name">Армирующая сетка</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_montaj_rebar" model="product.template">
+            <field name="name">Арматура Ø6–8 мм</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_montaj_brick" model="product.template">
+            <field name="name">Кирпич</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_montaj_mortar" model="product.template">
+            <field name="name">Цементно-песчаный раствор</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+
+        <!-- Plumbing Services (Santehnika Accessories) -->
+        <record id="service_plumbing_install_installation" model="product.template">
+            <field name="name">Установка инсталляции</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_plumbing_hidden_shower" model="product.template">
+            <field name="name">Скрытый гиг душ монтаж</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_plumbing_boiler" model="product.template">
+            <field name="name">Котёл установка</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_plumbing_shower_head" model="product.template">
+            <field name="name">Лейка для душа монтаж</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_plumbing_toilet" model="product.template">
+            <field name="name">Унитаз установка</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_plumbing_bath" model="product.template">
+            <field name="name">Ванна установка</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_plumbing_sink" model="product.template">
+            <field name="name">Установка раковины</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_plumbing_mixer" model="product.template">
+            <field name="name">Установка смесителя</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_plumbing_shower_cabin" model="product.template">
+            <field name="name">Установка душевой кабины</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_plumbing_shower_system" model="product.template">
+            <field name="name">Установка душевой системы</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_plumbing_siphon" model="product.template">
+            <field name="name">Установка сифона</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+
+        <!-- Plumbing Materials (Santehnika Accessories) -->
+        <record id="material_plumbing_installation" model="product.template">
+            <field name="name">Инсталляция для унитаза</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_hidden_shower_kit" model="product.template">
+            <field name="name">Скрытый гиг душ</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_bath" model="product.template">
+            <field name="name">Ванна</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_toilet" model="product.template">
+            <field name="name">Унитаз</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_hygienic_shower" model="product.template">
+            <field name="name">Гиг душ</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_mixer" model="product.template">
+            <field name="name">Смеситель</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_shower_kit" model="product.template">
+            <field name="name">Душ комплект</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_mixer_gas" model="product.template">
+            <field name="name">Смеситель. Газ.</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_water_filter" model="product.template">
+            <field name="name">Фильтр для воды</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_ariston" model="product.template">
+            <field name="name">Аристон</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_washbasin" model="product.template">
+            <field name="name">Унвалник</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_paper_holder" model="product.template">
+            <field name="name">Бумага держатель</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_brush" model="product.template">
+            <field name="name">Шотка</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_towel_warmer" model="product.template">
+            <field name="name">Полотенс сушитель</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_plumbing_trash_can" model="product.template">
+            <field name="name">Урна для мусора</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+
+        <!-- Heating Services (Otoplenie) -->
+        <record id="service_heating_warm_floor" model="product.template">
+            <field name="name">Тёплый пол</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.uom_square_meter"/>
+            <field name="uom_po_id" ref="uom.uom_square_meter"/>
+        </record>
+        <record id="service_heating_collector_install" model="product.template">
+            <field name="name">Коллектор установка</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_heating_collector_cabinet" model="product.template">
+            <field name="name">Коллектор шкаф установка</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="service_heating_tech_cabinet" model="product.template">
+            <field name="name">Сборка технического шкафа</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+
+
+        <!-- Heating Materials (Otoplenie) -->
+        
+        <!-- Attributes -->
+        <record id="attr_diameter" model="product.attribute">
+            <field name="name">Диаметр</field>
+            <field name="create_variant">always</field>
+            <field name="display_type">radio</field>
+        </record>
+        
+        <record id="attr_val_70" model="product.attribute.value">
+            <field name="name">70 мкр</field>
+            <field name="attribute_id" ref="attr_diameter"/>
+        </record>
+        <record id="attr_val_90" model="product.attribute.value">
+            <field name="name">90 мкр</field>
+            <field name="attribute_id" ref="attr_diameter"/>
+        </record>
+        <record id="attr_val_120" model="product.attribute.value">
+            <field name="name">120мкр</field>
+            <field name="attribute_id" ref="attr_diameter"/>
+        </record>
+
+
+        <record id="attr_val_3mm" model="product.attribute.value">
+            <field name="name">3мм</field>
+            <field name="attribute_id" ref="attr_diameter"/>
+        </record>
+        <record id="attr_val_5mm" model="product.attribute.value">
+            <field name="name">5мм</field>
+            <field name="attribute_id" ref="attr_diameter"/>
+        </record>
+        <record id="attr_val_10mm" model="product.attribute.value">
+            <field name="name">10мм</field>
+            <field name="attribute_id" ref="attr_diameter"/>
+        </record>
+
+        <record id="material_heating_insulation" model="product.template">
+            <field name="name">Изоляция теплый пол</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="attribute_line_ids" eval="[(5, 0, 0), (0, 0, {
+                'attribute_id': ref('attr_diameter'),
+                'value_ids': [(6, 0, [ref('attr_val_3mm'), ref('attr_val_5mm'), ref('attr_val_10mm')])]
+            })]"/>
+        </record>
+        <record id="material_heating_hydro_barrier" model="product.template">
+            <field name="name">Гидро паробарьер</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="attribute_line_ids" eval="[(5, 0, 0), (0, 0, {
+                'attribute_id': ref('attr_diameter'),
+                'value_ids': [(6, 0, [ref('attr_val_70'), ref('attr_val_90'), ref('attr_val_120')])]
+            })]"/>
+        </record>
+        <record id="material_heating_foam_xps" model="product.template">
+            <field name="name">Пенопласт ХПС</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_floor_hose" model="product.template">
+            <field name="name">Тёплый пол шланг</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_floor_cable" model="product.template">
+            <field name="name">Теплый пол кабель</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_staple" model="product.template">
+            <field name="name">Скоба</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_sensor_cable" model="product.template">
+            <field name="name">Датчик терморегулятора кабель</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_floor_control" model="product.template">
+            <field name="name">Пульт управление теплого пола</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_collector_cabinet_item" model="product.template">
+            <field name="name">Шкаф коллектора</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_collector_flowmeter" model="product.template">
+            <field name="name">Коллектор расходомер</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_collector_air_vent" model="product.template">
+            <field name="name">Коллектор воздушник</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_collector_bushing" model="product.template">
+            <field name="name">Втулка для коллектора</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_crane_thermometer" model="product.template">
+            <field name="name">Кран ракор термометр</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_boiler_gas" model="product.template">
+            <field name="name">Котёл</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_boiler_electric" model="product.template">
+            <field name="name">Бойлер</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_expansion_tank" model="product.template">
+            <field name="name">Расширительный бак</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_recirc_pump" model="product.template">
+            <field name="name">Рециркуляционный насос</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_safety_group" model="product.template">
+            <field name="name">Группа безопасности</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_american" model="product.template">
+            <field name="name">Американка</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_brass_barrel" model="product.template">
+            <field name="name">Бочонок латунный</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_gas_reducer" model="product.template">
+            <field name="name">Газовый редуктор</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_gas_filter" model="product.template">
+            <field name="name">Газовый фильтр</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_dielectric_coupling" model="product.template">
+            <field name="name">Диэлектрическая муфта для газа</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_radiator_tap" model="product.template">
+            <field name="name">Кран для радиатора</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_union_nut" model="product.template">
+            <field name="name">Накидной</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_outer_tip" model="product.template">
+            <field name="name">Наконечник наружный</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_check_valve" model="product.template">
+            <field name="name">Обратный клапан</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_chimney_elbow" model="product.template">
+            <field name="name">Отвод для дымохода</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_reduction_adapter" model="product.template">
+            <field name="name">Переходник редукционный</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_safety_valve" model="product.template">
+            <field name="name">Предохранительный клапан</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_voltage_relay" model="product.template">
+            <field name="name">Реле напряжения</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_ball_valve" model="product.template">
+            <field name="name">Шаровой кран</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_tee" model="product.template">
+            <field name="name">Тройник</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_strainer" model="product.template">
+            <field name="name">Фильтр сетчатый</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_gas_hose" model="product.template">
+            <field name="name">Шланг для газа</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+        <record id="material_heating_stabilizer" model="product.template">
+            <field name="name">Стабилизатор</field>
+            <field name="type">product</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+    </data>
+</odoo>
