@@ -3532,6 +3532,9 @@ class ConstructionTelegramBot(models.AbstractModel):
         
         _logger.info(f"[VOICE_PRICING] Voice data downloaded: {len(voice_data)} bytes")
         
+        # Send processing message
+        self._send_message(user.telegram_chat_id, "🤖 AI tahlil qilmoqda...")
+        
         # 2. Process with Gemini
         from .gemini_service import GeminiService
         result = GeminiService.process_pricing_request(api_key, voice_data, mime_type)
@@ -3618,7 +3621,11 @@ class ConstructionTelegramBot(models.AbstractModel):
             
         buttons = []
         if updated_lines:
-            buttons.append([{'text': "❌ Bekor qilish (Undo)", 'callback_data': f"snab:batch:undo_price:{batch.id}"}])
+            buttons.append([{'text': "❌ Bekor qilish", 'callback_data': f"snab:batch:undo_price:{batch.id}"}])
+        
+        # Always show approval button if batch is in draft or priced state
+        if batch.state in ['draft', 'priced']:
+            buttons.append([{'text': "📩 Tasdiqlashga yuborish", 'callback_data': f"snab:req:send:{batch.id}"}])
         
         buttons.append([{'text': "⬅️ Ortga", 'callback_data': f"snab:req:open:{batch.id}"}])
         buttons.append(self._get_nav_row())
