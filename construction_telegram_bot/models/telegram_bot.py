@@ -3594,8 +3594,8 @@ class ConstructionTelegramBot(models.AbstractModel):
             self._send_message(user.telegram_chat_id, "❌ Avval barcha mahsulotlarga narx kiriting.")
             return
 
-        batch.sudo().write({'state': 'priced'})
-        self._send_message(user.telegram_chat_id, "✅ So‘rov tasdiqlash uchun yuborildi.")
+        batch.sudo().write({'state': 'approved'})
+        self._send_message(user.telegram_chat_id, "✅ So'rov tasdiqlash uchun yuborildi.")
         
         # Call system method
         if hasattr(self, '_system_send_batch_approval'):
