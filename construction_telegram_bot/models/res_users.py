@@ -58,6 +58,8 @@ class ResUsers(models.Model):
     # Snab Batch Pricing Context
     snab_price_batch_id = fields.Many2one('construction.material.request.batch', string='Snab Pricing Batch')
     snab_price_line_id = fields.Many2one('construction.material.request.line', string='Snab Pricing Line')
+    snab_last_priced_line_ids = fields.Many2many('construction.material.request.line', 'snab_last_priced_lines_rel', 'user_id', 'line_id', string='Snab Last Priced Lines')
+
 
     # File Navigation Context
     file_nav_project_id = fields.Many2one('construction.project', string='File Nav Project')

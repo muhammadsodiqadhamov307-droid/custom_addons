@@ -814,6 +814,10 @@ class ConstructionTelegramBot(models.AbstractModel):
              pid = int(data.split(':')[2])
              self._start_snab_voice_pricing(user, pid)
 
+        elif data.startswith('snab:undo_last_price:'):
+             pid = int(data.split(':')[2])
+             self._handle_snab_undo_last_price(user, pid)
+
         # --- Prorab Issues ---
         elif data.startswith('prorab:issues:list:'):
              parts = data.split(':')
@@ -3092,20 +3096,23 @@ class ConstructionTelegramBot(models.AbstractModel):
         idx = 1
         for batch in batches:
              for line in batch.line_ids:
-                 price_txt = f"{line.unit_price:,.0f} so‘m" if line.unit_price > 0 else "Narx yo‘q"
+                 # Filter: If has price, hide from pending
+                 if line.unit_price > 0: continue
+                 
+                 price_txt = "Narx yo‘q" # Logic above ensures this
                  usta_name = line.batch_id.requester_id.name or "Noma'lum"
                  # Format: Name | Qty | Price | Usta
                  msg_lines.append(f"{idx}. {line.product_name} | {line.quantity} | {price_txt} | {usta_name}")
                  idx += 1
                  total_items += 1
-                 if len(msg_lines) > 50: # Limit to avoid message too long
+                 if len(msg_lines) > 50: 
                       msg_lines.append("... va boshqalar")
                       break
              if len(msg_lines) > 50: break
-
-        # If no items in batches?
+             
         if total_items == 0:
-             msg_lines.append("❌ Mahsulotlar topilmadi (to‘ldirilmagan).")
+             self._send_message(user.telegram_chat_id, f"✅ *{project.name}*\nSiz uchun kutilayotgan so‘rovlar yo‘q (barchasi narxlangan).", reply_markup={'inline_keyboard': [self._get_nav_row()]})
+             return
 
         text = "\n".join(msg_lines)
 
@@ -3357,26 +3364,62 @@ class ConstructionTelegramBot(models.AbstractModel):
                 best_match.sudo().write({'unit_price': price})
                 
                 # If batch was draft, move to priced?
-                # Using _system_send_batch_approval logic? No, just update price.
-                # But state should ideally reflect 'priced' if it has price.
                 if best_match.batch_id.state == 'draft':
                      best_match.batch_id.sudo().write({'state': 'priced'})
                      
-                updated_count += 1
+                updated_lines.append(best_match)
             else:
                 not_found.append(f"{item['name']} ({price})")
 
+        # Save state for Undo
+        if updated_lines:
+            user.sudo().write({
+                'snab_last_priced_line_ids': [(6, 0, [l.id for l in updated_lines])]
+            })
+
         # 4. Report
-        msg = f"✅ *Natija*\nYangilandi: {updated_count} ta\n"
+        msg = f"🎙 *Natija ({project.name})*\n\n"
+        if updated_lines:
+            msg += f"✅ *Yangilandi ({len(updated_lines)} ta):*\n"
+            for l in updated_lines:
+                 msg += f"- {l.product_name}: {self._format_money_uzs(l.unit_price)}\n"
+        else:
+            msg += "⚠️ Hech narsa yangilanmadi.\n"
+
         if not_found:
-            msg += f"\n⚠️ Topilmadi:\n" + "\n".join(not_found)
+            msg += f"\n⚠️ *Topilmadi:*\n" + "\n".join(not_found)
             
-        self._send_message(user.telegram_chat_id, msg)
+        buttons = []
+        if updated_lines:
+            buttons.append([{'text': "❌ Bekor qilish (Undo)", 'callback_data': f"snab:undo_last_price:{project.id}"}])
         
-        # Show list again
+        buttons.append(self._get_nav_row())
+        self._send_message(user.telegram_chat_id, msg, reply_markup={'inline_keyboard': buttons})
+        
+        # Show list again (pending only)
         self._show_snab_pending_list(user, project.id)
 
 
+
+    def _handle_snab_undo_last_price(self, user, project_id):
+        updated_lines = user.snab_last_priced_line_ids
+        if not updated_lines:
+            self._send_message(user.telegram_chat_id, "⚠️ Bekor qilish uchun ma'lumot topilmadi.")
+            return
+
+        cnt = 0
+        for line in updated_lines:
+            line.sudo().write({'unit_price': 0})
+            # If batch was priced but now has 0 items priced, move back to draft? 
+            # Logic: If ALL lines in batch are 0, move to draft.
+            # Simplify: Just reset price. Logic elsewhere handles state.
+            cnt += 1
+            
+        # Clear memory
+        user.sudo().write({'snab_last_priced_line_ids': [(5, 0, 0)]})
+        
+        self._send_message(user.telegram_chat_id, f"✅ Oxirgi narxlash bekor qilindi ({cnt} ta mahsulot).")
+        self._show_snab_pending_list(user, project_id)
 
     def _handle_snab_send_approval(self, user, batch_id):
         batch = self.env['construction.material.request.batch'].browse(batch_id)
