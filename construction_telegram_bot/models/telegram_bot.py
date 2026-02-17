@@ -3939,18 +3939,22 @@ class ConstructionTelegramBot(models.AbstractModel):
         try:
             if voice:
                 file_id = voice['file_id']
-                content = self._download_file(file_id)
-                if content:
-                    gemini_media = content
-                    gemini_mime = 'audio/ogg'
+                file_info = self._get_file(file_id)
+                if file_info and file_info.get('file_path'):
+                    content = self._download_file(file_info['file_path'])
+                    if content:
+                        gemini_media = content
+                        gemini_mime = 'audio/ogg'
             elif photo:
                 # Get largest photo
                 file_id = photo[-1]['file_id']
-                content = self._download_file(file_id)
-                caption = message.get('caption', '')
-                if content:
-                    gemini_media = content
-                    gemini_mime = 'image/jpeg'
+                file_info = self._get_file(file_id)
+                if file_info and file_info.get('file_path'):
+                    content = self._download_file(file_info['file_path'])
+                    caption = message.get('caption', '')
+                    if content:
+                        gemini_media = content
+                        gemini_mime = 'image/jpeg'
                     if caption:
                         gemini_text = caption
                 # If there's text with photo (caption), we treat it as AI prompt.
