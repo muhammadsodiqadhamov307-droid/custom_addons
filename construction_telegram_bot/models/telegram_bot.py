@@ -2399,7 +2399,10 @@ class ConstructionTelegramBot(models.AbstractModel):
                 f"Iltimos, qaytadan ko'rib chiqing va narx qo'ying."
             )
             
-            buttons = [[{'text': "💰 Narx qo'yish", 'callback_data': f"snab:mr:price_batch:{batch.id}"}]]
+            buttons = [
+            [{'text': "💰 Narx qo'yish", 'callback_data': f"snab:mr:price_batch:{batch.id}"}],
+            [{'text': "🎙 Ovozli narxlash", 'callback_data': f"snab:batch:price_voice:{batch.id}"}]
+        ]
             
             sent_count = 0
             for snab in snabs:
