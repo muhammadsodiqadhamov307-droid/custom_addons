@@ -3600,6 +3600,9 @@ class ConstructionTelegramBot(models.AbstractModel):
         # Call system method
         if hasattr(self, '_system_send_batch_approval'):
             self._system_send_batch_approval(batch)
+        
+        # Show Snab menu after approval
+        self._show_snab_menu(user)
 
      # --- PRORAB: Issues & Risk ---
 
