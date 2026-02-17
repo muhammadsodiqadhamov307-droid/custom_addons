@@ -344,6 +344,15 @@ class ConstructionTelegramBot(models.AbstractModel):
         if state == 'usta_ai_input':
             self._handle_usta_ai_input(user, message)
             return
+        
+        # Voice Pricing Input Handling
+        if state == 'snab_voice_price_wait':
+            # Check if batch-specific or project-level
+            if user.snab_price_batch_id:
+                self._handle_snab_batch_voice_pricing(user, message)
+            else:
+                self._handle_snab_voice_pricing(user, message)
+            return
 
         if state != 'idle':
             # ... (State handling logic unchanged)
