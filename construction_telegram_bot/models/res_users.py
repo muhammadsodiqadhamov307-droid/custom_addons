@@ -36,6 +36,7 @@ class ResUsers(models.Model):
         ('worker_issue_input_text', 'Worker: Inputting Issue Text'),
         ('worker_issue_input_photos', 'Worker: Inputting Issue Photos'),
         ('snab_price_input_line', 'Snab: Inputting Line Price'),
+        ('snab_voice_price_wait', 'Snab: Voice Price Wait'),
         ('usta_ai_input', 'Usta: AI Material Input (Photo/Voice/Text)'),
         ('registration_name', 'Registration: Inputting Name'),
         ('registration_role', 'Registration: Selecting Role'),
