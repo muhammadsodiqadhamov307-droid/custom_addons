@@ -426,7 +426,11 @@ class ConstructionTelegramBot(models.AbstractModel):
                 return
             elif state == 'snab_voice_price_wait':
                 # Text fallback for voice pricing
-                self._handle_snab_voice_pricing(user, message)
+                # Check if batch-specific or project-level
+                if user.snab_price_batch_id:
+                    self._handle_snab_batch_voice_pricing(user, message)
+                else:
+                    self._handle_snab_voice_pricing(user, message)
                 return
 
             # Default fallback for state not handled explicitly above
@@ -817,6 +821,10 @@ class ConstructionTelegramBot(models.AbstractModel):
         elif data.startswith('snab:undo_last_price:'):
              pid = int(data.split(':')[2])
              self._handle_snab_undo_last_price(user, pid)
+
+        elif data.startswith('snab:batch:price_voice:'):
+             batch_id = int(data.split(':')[3])
+             self._start_snab_batch_voice_pricing(user, batch_id)
 
         # --- Prorab Issues ---
         elif data.startswith('prorab:issues:list:'):
@@ -3170,6 +3178,7 @@ class ConstructionTelegramBot(models.AbstractModel):
         if batch.state in ['draft', 'priced']:
             buttons.append([{'text': "💵 Narx qo‘shish / O‘zgartirish", 'callback_data': f"snab:req:price:{batch.id}"}])
             buttons.append([{'text': "📩 Tasdiqlashga yuborish", 'callback_data': f"snab:req:send:{batch.id}"}])
+            buttons.append([{'text': "🎙 Ovozli narxlash", 'callback_data': f"snab:batch:price_voice:{batch.id}"}])
             back_cb = f"snab:req:list:{batch.project_id.id}"
         else:
             # Assumed valid back for approved/rejected
@@ -3400,6 +3409,145 @@ class ConstructionTelegramBot(models.AbstractModel):
         # Show list again (pending only)
         self._show_snab_pending_list(user, project.id)
 
+
+
+    def _start_snab_batch_voice_pricing(self, user, batch_id):
+        """Start voice pricing for a specific batch"""
+        batch = self.env['construction.material.request.batch'].browse(batch_id)
+        if not batch.exists(): return
+        
+        user.sudo().write({
+            'construction_bot_state': 'snab_voice_price_wait',
+            'snab_price_batch_id': batch.id,
+            'construction_selected_project_id': batch.project_id.id
+        })
+        
+        self._send_message(
+            user.telegram_chat_id,
+            f"🎙 *Ovozli Narxlash ({batch.name or batch.id})*\n\n"
+            "Material nomi va narxini aytib ovozli xabar yuboring.\n"
+            "Masalan: *\"Gipsokarton 50 ming, Rotband 80 ming\"*"
+        )
+
+    def _handle_snab_batch_voice_pricing(self, user, message):
+        """Handle voice message for batch-specific pricing"""
+        batch = user.snab_price_batch_id
+        if not batch:
+            self._send_message(user.telegram_chat_id, "❌ Batch topilmadi.")
+            self._show_main_menu(user)
+            return
+
+        api_key = self.env['ir.config_parameter'].sudo().get_param('construction.gemini_api_key')
+        
+        # 1. Download Voice
+        voice_data = None
+        mime_type = None
+        
+        if 'voice' in message:
+            file_id = message['voice']['file_id']
+            file_info = self._get_file(file_id)
+            if file_info and file_info.get('file_path'):
+                voice_data = self._download_file(file_info['file_path'])
+                mime_type = 'audio/ogg'
+        
+        if not voice_data:
+            self._send_message(user.telegram_chat_id, "❌ Ovozli xabar yuklanmadi.")
+            return
+        
+        # 2. Process with Gemini
+        from .gemini_service import GeminiService
+        result = GeminiService.process_pricing_request(api_key, voice_data, mime_type)
+        
+        if result.get('error'):
+            self._send_message(user.telegram_chat_id, f"❌ Xatolik: {result['error']}")
+            return
+            
+        items = result.get('items', [])
+        if not items:
+            self._send_message(user.telegram_chat_id, "⚠️ Hech qanday narx topilmadi. Aniqroq gapiring.")
+            return
+            
+        # 3. Match and Update (only within this batch)
+        pending_lines = batch.line_ids
+        
+        updated_lines = []
+        not_found = []
+        
+        for item in items:
+            name_spoken = item.get('name', '').lower()
+            price = item.get('price', 0)
+            
+            if not name_spoken or price <= 0: continue
+            
+            # Fuzzy match
+            best_match = None
+            
+            # Strategy A: Direct substring
+            candidates = pending_lines.filtered(lambda l: name_spoken in l.product_name.lower())
+            
+            # Strategy B: Reverse substring
+            if not candidates:
+                 candidates = pending_lines.filtered(lambda l: l.product_name.lower() in name_spoken)
+                 
+            if candidates:
+                best_match = candidates[0]
+            else:
+                # Strategy C: Word intersection
+                spoken_words = set(name_spoken.split())
+                best_score = 0
+                
+                for line in pending_lines:
+                    line_words = set(line.product_name.lower().split())
+                    common = spoken_words.intersection(line_words)
+                    if len(common) > 0:
+                        score = len(common) / len(line_words)
+                        if score > best_score:
+                            best_score = score
+                            best_match = line
+                
+                if best_score < 0.3:
+                    best_match = None
+
+            if best_match:
+                # Update Price
+                best_match.sudo().write({'unit_price': price})
+                
+                # If batch was draft, move to priced
+                if best_match.batch_id.state == 'draft':
+                     best_match.batch_id.sudo().write({'state': 'priced'})
+                     
+                updated_lines.append(best_match)
+            else:
+                not_found.append(f"{item['name']} ({price})")
+
+        # Save state for Undo
+        if updated_lines:
+            user.sudo().write({
+                'snab_last_priced_line_ids': [(6, 0, [l.id for l in updated_lines])]
+            })
+
+        # 4. Report
+        msg = f"🎙 *Natija ({batch.name or batch.id})*\n\n"
+        if updated_lines:
+            msg += f"✅ *Yangilandi ({len(updated_lines)} ta):*\n"
+            for l in updated_lines:
+                 msg += f"- {l.product_name}: {self._format_money_uzs(l.unit_price)}\n"
+        else:
+            msg += "⚠️ Hech narsa yangilanmadi.\n"
+
+        if not_found:
+            msg += f"\n⚠️ *Topilmadi:*\n" + "\n".join(not_found)
+            
+        buttons = []
+        if updated_lines:
+            buttons.append([{'text': "❌ Bekor qilish (Undo)", 'callback_data': f"snab:batch:undo_price:{batch.id}"}])
+        
+        buttons.append([{'text': "⬅️ Ortga", 'callback_data': f"snab:req:open:{batch.id}"}])
+        buttons.append(self._get_nav_row())
+        self._send_message(user.telegram_chat_id, msg, reply_markup={'inline_keyboard': buttons})
+        
+        # Reset state
+        user.sudo().write({'construction_bot_state': 'idle'})
 
 
     def _handle_snab_undo_last_price(self, user, project_id):
