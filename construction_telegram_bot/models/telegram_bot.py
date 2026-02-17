@@ -2321,6 +2321,9 @@ class ConstructionTelegramBot(models.AbstractModel):
         for chat_id in set(users_to_notify):
             self._send_message(chat_id, notification_msg)
 
+        # Show menu to approver
+        self._show_main_menu(user)
+
 
     def _show_client_batch_detail(self, user, batch_id):
         """Show batch detail for client approval"""
