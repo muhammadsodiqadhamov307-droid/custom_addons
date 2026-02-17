@@ -3401,7 +3401,7 @@ class ConstructionTelegramBot(models.AbstractModel):
             
         buttons = []
         if updated_lines:
-            buttons.append([{'text': "❌ Bekor qilish (Undo)", 'callback_data': f"snab:undo_last_price:{project.id}"}])
+            buttons.append([{'text': "❌ Bekor qilish", 'callback_data': f"snab:undo_last_price:{project.id}"}])
         
         buttons.append(self._get_nav_row())
         self._send_message(user.telegram_chat_id, msg, reply_markup={'inline_keyboard': buttons})
