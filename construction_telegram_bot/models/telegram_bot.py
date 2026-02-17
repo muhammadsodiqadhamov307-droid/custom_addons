@@ -3317,6 +3317,7 @@ class ConstructionTelegramBot(models.AbstractModel):
         
         updated_count = 0
         not_found = []
+        updated_lines = []
         
         for item in items:
             name_spoken = item.get('name', '').lower()
