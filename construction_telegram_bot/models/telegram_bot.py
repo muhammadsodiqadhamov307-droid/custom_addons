@@ -3402,6 +3402,14 @@ class ConstructionTelegramBot(models.AbstractModel):
         buttons = []
         if updated_lines:
             buttons.append([{'text': "❌ Bekor qilish", 'callback_data': f"snab:undo_last_price:{project.id}"}])
+            
+            # Get unique batches that were updated
+            updated_batches = list(set([line.batch_id for line in updated_lines]))
+            
+            # Add approval buttons for each batch
+            for batch in updated_batches:
+                if batch.state in ['draft', 'priced']:
+                    buttons.append([{'text': f"📩 Tasdiqlash: {batch.name or batch.id}", 'callback_data': f"snab:req:send:{batch.id}"}])
         
         buttons.append(self._get_nav_row())
         self._send_message(user.telegram_chat_id, msg, reply_markup={'inline_keyboard': buttons})
