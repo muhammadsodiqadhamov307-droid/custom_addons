@@ -1991,7 +1991,10 @@ class ConstructionTelegramBot(models.AbstractModel):
         
         msg += f"\n📜 *Ro‘yxat:*\n{list_str}"
 
-        buttons = [[{'text': "💰 Narx qo‘yish", 'callback_data': f"snab:mr:price_batch:{batch.id}"}]]
+        buttons = [
+            [{'text': "💰 Narx qo'yish", 'callback_data': f"snab:mr:price_batch:{batch.id}"}],
+            [{'text': "🎙 Ovozli narxlash", 'callback_data': f"snab:batch:price_voice:{batch.id}"}]
+        ]
         
         for snab in snabs:
             allowed = snab.get_allowed_construction_projects()
