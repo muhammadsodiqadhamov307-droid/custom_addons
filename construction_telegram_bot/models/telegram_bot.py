@@ -736,6 +736,11 @@ class ConstructionTelegramBot(models.AbstractModel):
         elif data.startswith('snab:mr:price:'):
              mrid = int(data.split(':')[3])
              self._start_snab_pricing(user, mrid)
+        
+        elif data.startswith('snab:batch:price_voice:'):
+             batch_id = int(data.split(':')[3])
+             self._start_snab_batch_voice_pricing(user, batch_id)
+
         elif data.startswith('mr:approve:'):
              mrid = int(data.split(':')[2])
              self._handle_mr_decision(user, mrid, 'approve')
