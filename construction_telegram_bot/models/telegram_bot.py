@@ -3677,7 +3677,7 @@ class ConstructionTelegramBot(models.AbstractModel):
             self._system_send_batch_approval(batch)
         
         # Show Snab menu after approval
-        self._show_snab_menu(user)
+        self._show_main_menu(user)
 
      # --- PRORAB: Issues & Risk ---
 
