@@ -3557,7 +3557,7 @@ class ConstructionTelegramBot(models.AbstractModel):
 
         batches = self.env['construction.material.request.batch'].search([
             ('project_id', '=', project.id),
-            ('state', '=', 'approved')
+            ('state', 'in', ['approved', 'priced'])
         ], order='approve_date desc, date desc', limit=20)
 
         if not batches:
@@ -3567,13 +3567,14 @@ class ConstructionTelegramBot(models.AbstractModel):
         # Merged Text
         msg_lines = []
         msg_lines.append(f"✅ *{project.name}*")
-        msg_lines.append(f"Tasdiqlangan materiallar (Jami: {len(batches)} ta paket):")
+        msg_lines.append(f"Tasdiqlangan va Narxlangan materiallar (Jami: {len(batches)} ta paket):")
         msg_lines.append("")
         
         grand_total = 0
         idx = 1
         for batch in batches:
              for line in batch.line_ids:
+                 if line.unit_price <= 0: continue
                  grand_total += line.total_price
                  usta_name = line.batch_id.requester_id.name or "Noma'lum"
                  msg_lines.append(f"{idx}. {line.product_name} | {line.quantity} | {self._format_money_uzs(line.total_price)} | {usta_name}")
