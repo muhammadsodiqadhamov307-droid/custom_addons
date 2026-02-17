@@ -3261,7 +3261,7 @@ class ConstructionTelegramBot(models.AbstractModel):
             self._show_main_menu(user)
             return
 
-        api_key = self.env['ir.config_parameter'].sudo().get_param('construction_bot.gemini_api_key')
+        api_key = self.env['ir.config_parameter'].sudo().get_param('gemini.api.key')
         
         # 1. Download Voice
         voice_data = None
