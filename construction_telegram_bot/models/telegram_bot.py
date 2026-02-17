@@ -3414,8 +3414,15 @@ class ConstructionTelegramBot(models.AbstractModel):
         buttons.append(self._get_nav_row())
         self._send_message(user.telegram_chat_id, msg, reply_markup={'inline_keyboard': buttons})
         
-        # Show list again (pending only)
-        self._show_snab_pending_list(user, project.id)
+        # Only show pending list if there are still items without prices
+        pending_check = self.env['construction.material.request.line'].search([
+            ('batch_id.project_id', '=', project.id),
+            ('batch_id.state', 'in', ['draft', 'priced']),
+            ('unit_price', '=', 0)
+        ], limit=1)
+        
+        if pending_check:
+            self._show_snab_pending_list(user, project.id)
 
 
 
