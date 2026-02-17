@@ -3461,13 +3461,22 @@ class ConstructionTelegramBot(models.AbstractModel):
 
     def _handle_snab_batch_voice_pricing(self, user, message):
         """Handle voice message for batch-specific pricing"""
+        import logging
+        _logger = logging.getLogger(__name__)
+        
+        _logger.info(f"[VOICE_PRICING] Handler called for user {user.name}")
+        _logger.info(f"[VOICE_PRICING] Message keys: {message.keys()}")
+        _logger.info(f"[VOICE_PRICING] Has voice: {'voice' in message}")
+        
         batch = user.snab_price_batch_id
         if not batch:
+            _logger.error(f"[VOICE_PRICING] No batch found for user {user.name}")
             self._send_message(user.telegram_chat_id, "❌ Batch topilmadi.")
             self._show_main_menu(user)
             return
 
         api_key = self.env['ir.config_parameter'].sudo().get_param('construction.gemini_api_key')
+
         
         # 1. Download Voice
         voice_data = None
@@ -3481,8 +3490,11 @@ class ConstructionTelegramBot(models.AbstractModel):
                 mime_type = 'audio/ogg'
         
         if not voice_data:
+            _logger.error(f"[VOICE_PRICING] Voice data not downloaded")
             self._send_message(user.telegram_chat_id, "❌ Ovozli xabar yuklanmadi.")
             return
+        
+        _logger.info(f"[VOICE_PRICING] Voice data downloaded: {len(voice_data)} bytes")
         
         # 2. Process with Gemini
         from .gemini_service import GeminiService
