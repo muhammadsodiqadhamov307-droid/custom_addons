@@ -154,6 +154,42 @@ class ConstructionTelegramBot(models.AbstractModel):
             _logger.error(f"[BOT] Payload: {json.dumps(payload, ensure_ascii=False)}")
             return None
 
+    def _get_file(self, file_id):
+        """Get file info from Telegram"""
+        token = self._get_token()
+        if not token:
+            return None
+        
+        url = f"https://api.telegram.org/bot{token}/getFile"
+        payload = {'file_id': file_id}
+        
+        try:
+            res_content = self._curl_request('POST', url, json_data=payload, timeout=10)
+            if res_content:
+                result = json.loads(res_content)
+                if result.get('ok'):
+                    return result.get('result')
+            return None
+        except Exception as e:
+            _logger.error(f"[BOT] Failed to get file info: {e}")
+            return None
+
+    def _download_file(self, file_path):
+        """Download file from Telegram"""
+        token = self._get_token()
+        if not token:
+            return None
+        
+        url = f"https://api.telegram.org/file/bot{token}/{file_path}"
+        
+        try:
+            file_data = self._curl_request('GET', url, timeout=30)
+            return file_data
+        except Exception as e:
+            _logger.error(f"[BOT] Failed to download file: {e}")
+            return None
+
+
     def _send_photo(self, chat_id, photo_data, caption=None, reply_markup=None):
         token = self._get_token()
         url = f"https://api.telegram.org/bot{token}/sendPhoto"
