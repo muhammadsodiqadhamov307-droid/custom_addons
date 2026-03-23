@@ -987,7 +987,7 @@ class ConstructionTelegramBot(models.AbstractModel):
         role = user.construction_role
         
         # Check Project Assignment (Hide menu if no project)
-        if role != 'admin' and not user.allowed_project_ids:
+        if role != 'admin' and not self._get_user_projects(user):
             _logger.info(f"[BOT_MENU] Hiding menu for {user.name} (No Projects)")
             self._send_message(user.telegram_chat_id, "⚠️ Sizga hali loyiha biriktirilmagan.\nAdmin siz uchun loyiha biriktirganida, menyu paydo bo'ladi.")
             return
